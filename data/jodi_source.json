@@ -1,0 +1,7 @@
+{
+  "database": "/home/calvin/commodities/data/commodities.duckdb",
+  "table": "fundamental.jodi_observation",
+  "product": "GASOLINE",
+  "unit": "KBBL",
+  "snapshot_utc": "2026-09-05T18:11:08.914769+00:00"
+}

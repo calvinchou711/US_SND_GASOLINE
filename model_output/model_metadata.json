@@ -1,0 +1,28 @@
+{
+  "product": "Finished motor gasoline; total gasoline stocks shown as context only",
+  "stock_units": "thousand barrels at month end",
+  "flow_units": "thousand barrels per calendar month",
+  "equation": "S[t] = S[t-1] + refinery/blender net production[t] + imports[t] + net receipts[t] + adjustments[t] + biofuel net production[t] - product supplied[t] - exports[t] + residual[t]",
+  "data_start": "2007-01-01",
+  "data_end": "2026-06-01",
+  "cv": "10 expanding folds, 12 test months each; final 24 months excluded from selection",
+  "holdout_start": "2024-07-01",
+  "forecast_timing": "One month after latest observed EIA month; conditional on prior monthly data being available. Current revised history, not a real-time release-vintage backtest.",
+  "selection": "Lowest pooled development CV MAE per PADD including baselines; fixed hyperparameters, no holdout tuning",
+  "flow_forecast": "Last 60 months, daily rates, linear trend and month fixed effects",
+  "forecast_stock_floor": 0,
+  "uncertainty": "Point forecasts only; no calibrated prediction intervals",
+  "recursive_validation": "Two disjoint 12-month holdout paths; refit at each origin; only two errors per horizon",
+  "versions": {
+    "python": "3.13.9",
+    "numpy": "2.3.5",
+    "pandas": "2.3.3",
+    "sklearn": "1.7.2",
+    "xgboost": "3.4.1"
+  },
+  "sources": [
+    "https://www.eia.gov/dnav/pet/pet_sum_snd_d_r10_mbbl_m_cur.htm",
+    "https://www.eia.gov/dnav/pet/TblDefs/pet_sum_snd_tbldef2.asp",
+    "https://www.jodidata.org/oil/"
+  ]
+}

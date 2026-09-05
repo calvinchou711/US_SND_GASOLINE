@@ -1,0 +1,502 @@
+[
+  {
+    "padd": 1,
+    "component": "production_kb",
+    "series_id": "MGFRPP11",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFRPP11m.xls",
+    "title": "East Coast (PADD 1) Refinery and Blender Net Production of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "eaefda94fbd20988463a4c9853a27a062716b06b431efc519e2544023aeddf1c",
+    "retrieved_utc": "2026-09-05T18:11:07.750379+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 1,
+    "component": "demand_kb",
+    "series_id": "MGFUPP11",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFUPP11m.xls",
+    "title": "East Coast (PADD 1) Product Supplied of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "74c3eeb96646a2fde7c888b153201f528d23836b5d0a23b2b4f373be30bcdbfa",
+    "retrieved_utc": "2026-09-05T18:11:07.748973+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 1,
+    "component": "imports_kb",
+    "series_id": "MGFIMP11",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFIMP11m.xls",
+    "title": "East Coast (PADD 1) Imports of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "121f1515aa9e6ca025546b3436aa583b750a63a5637d71fb4a0caf7bf6d59cc7",
+    "retrieved_utc": "2026-09-05T18:11:07.756416+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 1,
+    "component": "exports_kb",
+    "series_id": "MGFEXP11",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFEXP11m.xls",
+    "title": "East Coast (PADD 1) Exports of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "f3124da1a44b1f6f2342c912bdd520997e67643f1b79a9b059cdcea3ec009300",
+    "retrieved_utc": "2026-09-05T18:11:07.754521+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 1,
+    "component": "net_receipts_kb",
+    "series_id": "MGFNRP11",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFNRP11m.xls",
+    "title": "East Coast (PADD 1) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "c93dba98e65f44d4c70f3c52e32adf0cabf6f55921215d7807601ecf0b4e21ca",
+    "retrieved_utc": "2026-09-05T18:11:07.754387+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 1,
+    "component": "adjustments_kb",
+    "series_id": "MGFUA_R10_1",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFUA_R10_1m.xls",
+    "title": "East Coast (PADD 1) Supply Adjustment of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "785e2078c28ba2b1eb2562c805d1ba4f9a2806c4e1a3baa1d751e5d9973c2f22",
+    "retrieved_utc": "2026-09-05T18:11:07.746348+00:00",
+    "rows": 463
+  },
+  {
+    "padd": 1,
+    "component": "biofuels_kb",
+    "series_id": "M_EPM0F_YNP_R10_MBBL",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/M_EPM0F_YNP_R10_MBBLm.xls",
+    "title": "East Coast (PADD 1) Biofuels Plant Net Production of Finished Gasoline (Thousand Barrels)",
+    "sha256": "63bbdb71831cea9b37e7022cf5ec60fd913874e72187f87c086cb7b1b4b830ca",
+    "retrieved_utc": "2026-09-05T18:11:07.948738+00:00",
+    "rows": 4
+  },
+  {
+    "padd": 1,
+    "component": "stock_kb",
+    "series_id": "MGFSTP11",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFSTP11m.xls",
+    "title": "East Coast (PADD 1) Ending Stocks of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "a9b1f691bfa582746f97abe4de9045a69bb9b9086dee8b6653abce8d3335046d",
+    "retrieved_utc": "2026-09-05T18:11:07.979919+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 1,
+    "component": "reported_stock_change_kb",
+    "series_id": "MGFSCP11",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFSCP11m.xls",
+    "title": "East Coast (PADD 1) Finished Motor Gasoline Stock Change (Thousand Barrels)",
+    "sha256": "edacca2c72b52175ae52233678574966e769f0d670d3966aa02ac489d90984cb",
+    "retrieved_utc": "2026-09-05T18:11:07.970229+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 1,
+    "component": "total_gasoline_stock_kb",
+    "series_id": "MGTSTP11",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGTSTP11m.xls",
+    "title": "East Coast (PADD 1) Ending Stocks of Total Gasoline (Thousand Barrels)",
+    "sha256": "54a30a3c31b99f7b27f0ddc7a5c6fdc4500b43a2f913e9661ca9139cfa9e341d",
+    "retrieved_utc": "2026-09-05T18:11:07.958461+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 2,
+    "component": "production_kb",
+    "series_id": "MGFRPP21",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFRPP21m.xls",
+    "title": "Midwest (PADD 2) Refinery and Blender Net Production of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "f77b97e59dd878bbbbd6931245a578a87c6b2b06dcd9c27a533bdc7b52729894",
+    "retrieved_utc": "2026-09-05T18:11:08.027664+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 2,
+    "component": "demand_kb",
+    "series_id": "MGFUPP21",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFUPP21m.xls",
+    "title": "Midwest (PADD 2) Product Supplied of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "14b2eceb84b03b8ea57c4a38d7f37b97c9330ef4aea4a91ee56a0137777e09d0",
+    "retrieved_utc": "2026-09-05T18:11:07.996388+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 2,
+    "component": "imports_kb",
+    "series_id": "MGFIMP21",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFIMP21m.xls",
+    "title": "Midwest (PADD 2) Imports of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "78591a469134323e2d2152855cc3f16832dff81fc3b0e3d79f2865db4150378f",
+    "retrieved_utc": "2026-09-05T18:11:08.194772+00:00",
+    "rows": 395
+  },
+  {
+    "padd": 2,
+    "component": "exports_kb",
+    "series_id": "MGFEXP21",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFEXP21m.xls",
+    "title": "Midwest (PADD 2) Exports of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "5d91c5d8ec70607ad99f85e9da972e119c0a9b228e349e6541290ae82fa95106",
+    "retrieved_utc": "2026-09-05T18:11:08.128172+00:00",
+    "rows": 522
+  },
+  {
+    "padd": 2,
+    "component": "net_receipts_kb",
+    "series_id": "MGFNRP21",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFNRP21m.xls",
+    "title": "Midwest (PADD 2) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "91829247cd0777b1a5825e17567996f5d6056c18bc747a32819b1974777d3253",
+    "retrieved_utc": "2026-09-05T18:11:08.174839+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 2,
+    "component": "adjustments_kb",
+    "series_id": "MGFUA_R20_1",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFUA_R20_1m.xls",
+    "title": "Midwest (PADD 2) Supply Adjustment of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "46c65f3d1ca14a106423719f4278d69eb825537a59fc8f188acbc2d93da8b12c",
+    "retrieved_utc": "2026-09-05T18:11:08.168116+00:00",
+    "rows": 433
+  },
+  {
+    "padd": 2,
+    "component": "biofuels_kb",
+    "series_id": "M_EPM0F_YNP_R20_MBBL",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/M_EPM0F_YNP_R20_MBBLm.xls",
+    "title": "Midwest (PADD 2) Biofuels Plant Net Production of Finished Gasoline (Thousand Barrels)",
+    "sha256": "7f2c52862e592d8318d99aceaeacd94f1ad74f279373003b91dca15d4cf475eb",
+    "retrieved_utc": "2026-09-05T18:11:08.149337+00:00",
+    "rows": 210
+  },
+  {
+    "padd": 2,
+    "component": "stock_kb",
+    "series_id": "MGFSTP21",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFSTP21m.xls",
+    "title": "Midwest (PADD 2) Ending Stocks of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "4d952ee1c4f23faa2f18eb39f6ca4a677f4de7eef0ab9c4e627c4f3ab1482038",
+    "retrieved_utc": "2026-09-05T18:11:08.188889+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 2,
+    "component": "reported_stock_change_kb",
+    "series_id": "MGFSCP21",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFSCP21m.xls",
+    "title": "Midwest (PADD 2) Finished Motor Gasoline Stock Change (Thousand Barrels)",
+    "sha256": "aab1d704e0317ad278a6017865d42cb445f758d6d2eaaac5d561e1245af5db97",
+    "retrieved_utc": "2026-09-05T18:11:08.219101+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 2,
+    "component": "total_gasoline_stock_kb",
+    "series_id": "MGTSTP21",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGTSTP21m.xls",
+    "title": "Midwest (PADD 2) Ending Stocks of Total Gasoline (Thousand Barrels)",
+    "sha256": "8a18e767067d2c3b406cbce44449f25de02fbd9fe374dcf8663de2ce9a92dfdc",
+    "retrieved_utc": "2026-09-05T18:11:08.257003+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 3,
+    "component": "production_kb",
+    "series_id": "MGFRPP31",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFRPP31m.xls",
+    "title": "Gulf Coast (PADD 3) Refinery and Blender Net Production of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "04092811d8ccacccb457831b0f59f2972d70b27346b1256c80ddd514b8ac3bd4",
+    "retrieved_utc": "2026-09-05T18:11:08.282425+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 3,
+    "component": "demand_kb",
+    "series_id": "MGFUPP31",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFUPP31m.xls",
+    "title": "Gulf Coast (PADD 3) Product Supplied of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "2847e87c03da7493a90ae20bdce436988218db68c40ddadbc13e6106c851537c",
+    "retrieved_utc": "2026-09-05T18:11:08.285746+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 3,
+    "component": "imports_kb",
+    "series_id": "MGFIMP31",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFIMP31m.xls",
+    "title": "Gulf Coast (PADD 3) Imports of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "c14676b1101f89251f47e02c00002fc8141fe7515d8a4c9277e13a9fa0a0b992",
+    "retrieved_utc": "2026-09-05T18:11:08.322952+00:00",
+    "rows": 403
+  },
+  {
+    "padd": 3,
+    "component": "exports_kb",
+    "series_id": "MGFEXP31",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFEXP31m.xls",
+    "title": "Gulf Coast (PADD 3) Exports of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "4c5e7ea9980469ec043ff2b4f90fb3c3539ccc37644e5e1f8b6db39604e7ea90",
+    "retrieved_utc": "2026-09-05T18:11:08.342007+00:00",
+    "rows": 537
+  },
+  {
+    "padd": 3,
+    "component": "net_receipts_kb",
+    "series_id": "MGFNRP31",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFNRP31m.xls",
+    "title": "Gulf Coast (PADD 3) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "2aeed80126cd03dd1f404eaa3be651d4ff83d43274c647375dcbb7394c7b4f2d",
+    "retrieved_utc": "2026-09-05T18:11:08.353725+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 3,
+    "component": "adjustments_kb",
+    "series_id": "MGFUA_R30_1",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFUA_R30_1m.xls",
+    "title": "Gulf Coast (PADD 3) Supply Adjustment of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "2b4e2b9523c7ef9c56030b2ad55dd1ef85def09ec8a272cb9eb1b22403b08934",
+    "retrieved_utc": "2026-09-05T18:11:08.377063+00:00",
+    "rows": 502
+  },
+  {
+    "padd": 3,
+    "component": "biofuels_kb",
+    "series_id": "M_EPM0F_YNP_R30_MBBL",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/M_EPM0F_YNP_R30_MBBLm.xls",
+    "title": "Gulf Coast (PADD 3) Biofuels Plant Net Production of Finished Gasoline (Thousand Barrels)",
+    "sha256": "239aa9cc7f2bcc42c431fb93f00cbcad8b6277a3ce2084e42693b7ff22238da6",
+    "retrieved_utc": "2026-09-05T18:11:08.384241+00:00",
+    "rows": 54
+  },
+  {
+    "padd": 3,
+    "component": "stock_kb",
+    "series_id": "MGFSTP31",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFSTP31m.xls",
+    "title": "Gulf Coast (PADD 3) Ending Stocks of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "32a65dd41a4fe245f23c6bb8807c36d9a4e838496130be8e0776cd0863bcb78b",
+    "retrieved_utc": "2026-09-05T18:11:08.398271+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 3,
+    "component": "reported_stock_change_kb",
+    "series_id": "MGFSCP31",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFSCP31m.xls",
+    "title": "Gulf Coast (PADD 3) Finished Motor Gasoline Stock Change (Thousand Barrels)",
+    "sha256": "0f301f97d7dafba2e8a04e10d47040b8c3c97ddaea7f733bdf593f7921541578",
+    "retrieved_utc": "2026-09-05T18:11:08.448329+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 3,
+    "component": "total_gasoline_stock_kb",
+    "series_id": "MGTSTP31",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGTSTP31m.xls",
+    "title": "Gulf Coast (PADD 3) Ending Stocks of Total Gasoline (Thousand Barrels)",
+    "sha256": "e6aa7ef617f682b898a62c2cac9bc5d6433e98ad3c5d210fa0a46560eb01c19e",
+    "retrieved_utc": "2026-09-05T18:11:08.441639+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 4,
+    "component": "production_kb",
+    "series_id": "MGFRPP41",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFRPP41m.xls",
+    "title": "Rocky Mountain (PADD 4) Refinery and Blender Net Production of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "0828e43f55baec14eb359544fdd140640b008d77653e0057befcf827847b7419",
+    "retrieved_utc": "2026-09-05T18:11:08.476759+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 4,
+    "component": "demand_kb",
+    "series_id": "MGFUPP41",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFUPP41m.xls",
+    "title": "Rocky Mountain (PADD 4) Product Supplied of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "e2132b7683b2d4f658af3c3dc503bcd6e435ddfa79c92342a419048ea9e9010f",
+    "retrieved_utc": "2026-09-05T18:11:08.513285+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 4,
+    "component": "imports_kb",
+    "series_id": "MGFIMP41",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFIMP41m.xls",
+    "title": "Rocky Mountain (PADD 4) Imports of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "b18fee52e1b2c07c50d0cf0e46ed5f7a9509d8258fa825e9a82736f0529e7894",
+    "retrieved_utc": "2026-09-05T18:11:08.519264+00:00",
+    "rows": 292
+  },
+  {
+    "padd": 4,
+    "component": "exports_kb",
+    "series_id": "MGFEXP41",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFEXP41m.xls",
+    "title": "Rocky Mountain (PADD 4) Exports of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "5680a875fc13eed1127f0e0973dfff743acf69c4ba954ba91cb3b112faa57f56",
+    "retrieved_utc": "2026-09-05T18:11:08.513061+00:00",
+    "rows": 378
+  },
+  {
+    "padd": 4,
+    "component": "net_receipts_kb",
+    "series_id": "MGFNRP41",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFNRP41m.xls",
+    "title": "Rocky Mountain (PADD 4) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "86a74c9c7ca898547f97ed9e83d779cb53c3ffff87638aa4d5e9165d3320d0ff",
+    "retrieved_utc": "2026-09-05T18:11:08.566812+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 4,
+    "component": "adjustments_kb",
+    "series_id": "MGFUA_R40_1",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFUA_R40_1m.xls",
+    "title": "Rocky Mountain (PADD 4) Supply Adjustment of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "5455c16d2226b2742691d900a424fa2f79e101af67902444b67400b2051f2cb3",
+    "retrieved_utc": "2026-09-05T18:11:08.564245+00:00",
+    "rows": 468
+  },
+  {
+    "padd": 4,
+    "component": "biofuels_kb",
+    "series_id": "M_EPM0F_YNP_R40_MBBL",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/M_EPM0F_YNP_R40_MBBLm.xls",
+    "title": "Mountain (PADD 4) Renewable Fuel & Oxygenate Plant Net Production of Finished Gasoline (Thousand Barrels)",
+    "sha256": "40b046063c9ed1376157e32b3602aa06b366f8746b194e12cf880d9c42894fc0",
+    "retrieved_utc": "2026-09-05T18:11:08.581679+00:00",
+    "rows": 4
+  },
+  {
+    "padd": 4,
+    "component": "stock_kb",
+    "series_id": "MGFSTP41",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFSTP41m.xls",
+    "title": "Rocky Mountain (PADD 4) Ending Stocks of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "f0d282676f6a661cf1c22dcdabcec7b8352d6b1e440749e08581004e866ebfe2",
+    "retrieved_utc": "2026-09-05T18:11:08.700351+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 4,
+    "component": "reported_stock_change_kb",
+    "series_id": "MGFSCP41",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFSCP41m.xls",
+    "title": "Rocky Mountain (PADD 4) Finished Motor Gasoline Stock Change (Thousand Barrels)",
+    "sha256": "e3dc162e54b814d7752c199951fca52e1441675cf5a86106c90624e1b9edc178",
+    "retrieved_utc": "2026-09-05T18:11:08.641698+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 4,
+    "component": "total_gasoline_stock_kb",
+    "series_id": "MGTSTP41",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGTSTP41m.xls",
+    "title": "Rocky Mountain (PADD 4) Ending Stocks of Total Gasoline (Thousand Barrels)",
+    "sha256": "04600beb824fe412e3e365b4148a1b29b46e2fd5b4e3f96a00f319bce45dfbe1",
+    "retrieved_utc": "2026-09-05T18:11:08.643610+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 5,
+    "component": "production_kb",
+    "series_id": "MGFRPP51",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFRPP51m.xls",
+    "title": "West Coast (PADD 5) Refinery and Blender Net Production of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "1485245ac6d1f09ee64ccf9bf43faff0a56ff2439120890a77b3f0451f8e99e9",
+    "retrieved_utc": "2026-09-05T18:11:08.764560+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 5,
+    "component": "demand_kb",
+    "series_id": "MGFUPP51",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFUPP51m.xls",
+    "title": "West Coast (PADD 5) Product Supplied of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "254b74563c28a368e50d48ec78375b76d4e49d13dfb61482d4b3b0fa9b47d908",
+    "retrieved_utc": "2026-09-05T18:11:08.690430+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 5,
+    "component": "imports_kb",
+    "series_id": "MGFIMP51",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFIMP51m.xls",
+    "title": "West Coast (PADD 5) Imports of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "ccc9556de9d84d7e912f55531e4fb4d5dbd33d20bebcd224d46a1531d4d87a39",
+    "retrieved_utc": "2026-09-05T18:11:08.706705+00:00",
+    "rows": 543
+  },
+  {
+    "padd": 5,
+    "component": "exports_kb",
+    "series_id": "MGFEXP51",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFEXP51m.xls",
+    "title": "West Coast (PADD 5) Exports of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "8343f61ff5742fc9b5708ba759a53fd124aaccdceb4b0febff8714aa2d556cab",
+    "retrieved_utc": "2026-09-05T18:11:08.763415+00:00",
+    "rows": 545
+  },
+  {
+    "padd": 5,
+    "component": "net_receipts_kb",
+    "series_id": "MGFNRP51",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFNRP51m.xls",
+    "title": "West Coast (PADD 5) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "647b1c0e1853a81521419c8f93f468438485ce63196907edd6104c7710cdd395",
+    "retrieved_utc": "2026-09-05T18:11:08.751816+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 5,
+    "component": "adjustments_kb",
+    "series_id": "MGFUA_R50_1",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFUA_R50_1m.xls",
+    "title": "West Coast (PADD 5) Supply Adjustment of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "a41f8de0930e82ab4564c17de1af546c01dd9091b9245c591153199670931243",
+    "retrieved_utc": "2026-09-05T18:11:08.795746+00:00",
+    "rows": 426
+  },
+  {
+    "padd": 5,
+    "component": "biofuels_kb",
+    "series_id": "M_EPM0F_YNP_R50_MBBL",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/M_EPM0F_YNP_R50_MBBLm.xls",
+    "title": "West Coast (PADD 5) Biofuels Plant Net Production of Finished Gasoline (Thousand Barrels)",
+    "sha256": "ca267c04c3d6ba4c2ab5e87bb6dc903a3e21977a4c6ad15ba44114cd0377f779",
+    "retrieved_utc": "2026-09-05T18:11:08.829538+00:00",
+    "rows": 60
+  },
+  {
+    "padd": 5,
+    "component": "stock_kb",
+    "series_id": "MGFSTP51",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFSTP51m.xls",
+    "title": "West Coast (PADD 5) Ending Stocks of Finished Motor Gasoline (Thousand Barrels)",
+    "sha256": "81d306d3fcd40c404b56de8579168ec1c0aca4eab760db4aaf3a699da013cb79",
+    "retrieved_utc": "2026-09-05T18:11:08.814254+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 5,
+    "component": "reported_stock_change_kb",
+    "series_id": "MGFSCP51",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGFSCP51m.xls",
+    "title": "West Coast (PADD 5) Finished Motor Gasoline Stock Change (Thousand Barrels)",
+    "sha256": "02dc7517410bd674f60bad4a64d4bdf3d339ad03063407be3bcb2fda68da9c5d",
+    "retrieved_utc": "2026-09-05T18:11:08.845509+00:00",
+    "rows": 546
+  },
+  {
+    "padd": 5,
+    "component": "total_gasoline_stock_kb",
+    "series_id": "MGTSTP51",
+    "url": "https://www.eia.gov/dnav/pet/hist_xls/MGTSTP51m.xls",
+    "title": "West Coast (PADD 5) Ending Stocks of Total Gasoline (Thousand Barrels)",
+    "sha256": "bb7abe3ad59c949703fe62b4014b934ec9ff848b7786db77ad231489c8f5a716",
+    "retrieved_utc": "2026-09-05T18:11:08.854539+00:00",
+    "rows": 546
+  }
+]
