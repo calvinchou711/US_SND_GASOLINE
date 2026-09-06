@@ -1,4 +1,4 @@
-"""Monthly finished-motor-gasoline SnD: PADD models, chronological evaluation, U.S. sums."""
+"""Monthly total-motor-gasoline SnD: PADD models, chronological evaluation, U.S. sums."""
 from pathlib import Path
 import argparse
 import json
@@ -44,9 +44,9 @@ def forecast_flows(history, months):
               train[FLOWS].to_numpy() / train.month.dt.days_in_month.to_numpy()[:, None])
     rates = model.predict(seasonal_design(months, train.month.iloc[0]))
     flows = rates * pd.DatetimeIndex(months).days_in_month.to_numpy()[:, None]
-    for c in ['production_kb', 'demand_kb', 'imports_kb', 'exports_kb']:
+    for c in ['demand_kb', 'imports_kb', 'exports_kb']:
         flows[:, FLOWS.index(c)] = np.maximum(flows[:, FLOWS.index(c)], 0)
-    # Net receipts, adjustments and net biofuel production can be negative.
+    # Net refinery production, receipts, adjustments and biofuel net production can be negative.
     return pd.DataFrame(flows, columns=FLOWS, index=pd.DatetimeIndex(months))
 
 
@@ -259,7 +259,8 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10):
         recursive.append(path)
     recursive = pd.concat(recursive, ignore_index=True)
     us_recursive = aggregate(recursive, ['month','origin_month','horizon'], ['actual_kb','predicted_kb'])
-    us_history = aggregate(panel, ['month'], FLOWS+['stock_kb','total_gasoline_stock_kb','balance_kb','accounting_residual_kb'])
+    us_history = aggregate(panel, ['month'], FLOWS+['stock_kb','total_gasoline_stock_kb','finished_stock_kb','blending_stock_kb',
+        'finished_production_kb','blending_net_inputs_kb','stock_component_residual_kb','balance_kb','accounting_residual_kb'])
     jodi_raw = pd.read_csv(Path(data_dir)/'jodi_us_raw.csv')
     jodi_raw['month'] = pd.to_datetime(jodi_raw.time_period).dt.to_period('M').dt.to_timestamp()
     if (jodi_raw.groupby(['month','flow_breakdown']).obs_value.nunique() > 1).any():
@@ -284,15 +285,16 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10):
         model, _ = fit('constrained_level', frame)
         coefficients.append({'padd':p,'intercept_kb':model.intercept_,**dict(zip(columns('constrained_level'),model.coef_))})
     pd.DataFrame(coefficients).to_csv(output/'constrained_model_coefficients.csv',index=False)
-    metadata = {'product':'Finished motor gasoline; total gasoline stocks shown as context only',
+    metadata = {'product':'Total motor gasoline: finished motor gasoline plus motor gasoline blending components',
         'stock_units':'thousand barrels at month end', 'flow_units':'thousand barrels per calendar month',
-        'equation':'S[t] = S[t-1] + refinery/blender net production[t] + imports[t] + net receipts[t] + adjustments[t] + biofuel net production[t] - product supplied[t] - exports[t] + residual[t]',
+        'equation':'S[t] = S[t-1] + (finished refinery/blender net production[t] - blending-component refinery/blender net inputs[t]) + imports[t] + net receipts[t] + adjustments[t] + biofuel net production[t] - product supplied[t] - exports[t] + residual[t]',
         'data_start':str(panel.month.min().date()),'data_end':str(panel.month.max().date()),
         'cv':f'{folds} expanding folds, 12 test months each; final 24 months excluded from selection',
         'holdout_start':str(samples[1].month.iloc[-24].date()),
         'forecast_timing':'One month after latest observed EIA month; conditional on prior monthly data being available. Current revised history, not a real-time release-vintage backtest.',
         'selection':'Lowest pooled development CV MAE per PADD including baselines; fixed hyperparameters, no holdout tuning',
-        'flow_forecast':'Last 60 months, daily rates, linear trend and month fixed effects',
+        'flow_forecast':'Last 60 months, daily rates, linear trend and month fixed effects; net production remains signed',
+        'components':'Flows sum finished and blending components; production is finished net production minus blending net inputs; stocks use independently published MGTSTP series',
         'forecast_stock_floor':0, 'uncertainty':'Point forecasts only; no calibrated prediction intervals',
         'recursive_validation':'Two disjoint 12-month holdout paths; refit at each origin; only two errors per horizon',
         'versions':{'python':platform.python_version(),'numpy':np.__version__,'pandas':pd.__version__,

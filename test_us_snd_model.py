@@ -13,9 +13,14 @@ def test_data_units_calendar_and_balance(panel):
     assert not panel.duplicated(['month','padd']).any()
     assert panel.groupby('month').padd.nunique().eq(5).all()
     # EIA rounding and reporting differences are tiny versus monthly flows.
-    assert panel.accounting_residual_kb.abs().max() <= 5
+    ordinary=panel[panel.month.ne(pd.Timestamp('2026-01-01'))]
+    assert ordinary.accounting_residual_kb.abs().max() <= 5
+    assert panel.accounting_residual_kb.abs().max() <= 81
     np.testing.assert_allclose(panel.balance_kb, panel[FLOWS].to_numpy() @ SIGNS)
-    assert (panel.total_gasoline_stock_kb >= panel.stock_kb).all()
+    np.testing.assert_allclose(panel.stock_kb,panel.finished_stock_kb+panel.blending_stock_kb,rtol=0,atol=1)
+    np.testing.assert_allclose(panel.stock_kb,panel.total_gasoline_stock_kb)
+    np.testing.assert_allclose(panel.production_kb,panel.finished_production_kb-panel.blending_net_inputs_kb)
+    assert (panel.stock_kb > panel.finished_stock_kb).all()
     assert panel.net_receipts_kb.min() < 0
     assert panel.adjustments_kb.min() < 0
 
@@ -69,7 +74,7 @@ def test_saved_forecasts_and_source_provenance():
     import hashlib,json
     from gasoline_data import HERE
     for source in json.loads((HERE/'data/source_manifest.json').read_text()):
-        raw=(HERE/'data/raw'/f"{source['series_id']}m.xls").read_bytes()
+        raw=(HERE/'data/raw'/source['source_file']).read_bytes()
         assert hashlib.sha256(raw).hexdigest()==source['sha256']
     regional=pd.read_csv(HERE/'model_output/padd_forecast_12m.csv')
     national=pd.read_csv(HERE/'model_output/us_forecast_12m.csv')
@@ -78,3 +83,16 @@ def test_saved_forecasts_and_source_provenance():
     np.testing.assert_allclose(national.stock_kb,regional.groupby('month').stock_kb.sum())
     np.testing.assert_allclose(regional.supply_kb-regional.total_demand_kb,regional.balance_kb,atol=1e-7)
     np.testing.assert_allclose(regional.stock_change_kb-regional.balance_kb,regional.model_reconciliation_kb,atol=1e-7)
+
+
+def test_constituent_flows_and_internal_conversion(panel):
+    for c in FLOWS[1:] + ['reported_stock_change_kb']:
+        np.testing.assert_allclose(panel[c],panel['finished_'+c]+panel['blending_'+c])
+    # A change in internal conversion cannot create total gasoline supply.
+    conversion=panel.copy()
+    conversion['finished_production_kb']+=1000
+    conversion['blending_net_inputs_kb']+=1000
+    np.testing.assert_allclose(conversion.finished_production_kb-conversion.blending_net_inputs_kb,panel.production_kb)
+    for p in [3,4]:
+        assert panel[panel.padd.eq(p)].blending_biofuels_kb.eq(0).all()
+        assert panel[panel.padd.eq(p)].blending_biofuels_kb_assumed_zero.all()

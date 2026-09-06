@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - us_snd_model_results.ipynb
+      - website/**
       - .github/workflows/publish-notebook.yml
   workflow_dispatch:
 
@@ -100,3 +101,24 @@ jobs:
             "mv '$html_temp' '$DEPLOY_DIR/us_snd_model_results.html' && \
              mv '$notebook_temp' '$DEPLOY_DIR/us_snd_model_results.ipynb' && \
              chmod 644 '$DEPLOY_DIR/us_snd_model_results.html' '$DEPLOY_DIR/us_snd_model_results.ipynb'"
+
+      - name: Publish total gasoline page labels
+        env:
+          DEPLOY_HOST: 162.241.216.86
+          DEPLOY_USER: calvind0
+          THEME_DIR: /home4/calvind0/public_html/wp-content/themes/calvin-portfolio
+        run: |
+          ssh_options=(
+            -i "$RUNNER_TEMP/bluehost_deploy_key"
+            -o IdentitiesOnly=yes
+            -o StrictHostKeyChecking=yes
+            -o "UserKnownHostsFile=$RUNNER_TEMP/bluehost_known_hosts"
+          )
+          for page in page-us-supply-demand-model-gasoline.php page-portfolio.php; do
+            php -l "website/$page"
+            scp "${ssh_options[@]}" "website/$page" "$DEPLOY_USER@$DEPLOY_HOST:$THEME_DIR/.$page.$GITHUB_RUN_ID"
+            ssh "${ssh_options[@]}" "$DEPLOY_USER@$DEPLOY_HOST" \
+              "php -l '$THEME_DIR/.$page.$GITHUB_RUN_ID' && mv '$THEME_DIR/.$page.$GITHUB_RUN_ID' '$THEME_DIR/$page' && chmod 644 '$THEME_DIR/$page'"
+          done
+          ssh "${ssh_options[@]}" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd /home4/calvind0/public_html && wp post update 15 --post_title='US Supply & Demand Model for Total Gasoline' && wp cache flush"

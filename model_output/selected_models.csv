@@ -1,6 +1,6 @@
 padd,selected_model,cv_mae_kb
-1,xgboost_change,539.7418823242188
-2,persistence,372.375
-3,constrained_level,770.769783058658
-4,neural_network_change,121.05800050237968
-5,xgboost_change,189.13373921712238
+1,spline_ridge_change,2754.787196802559
+2,neural_network_change,1601.034330555021
+3,neural_network_change,2394.226167150889
+4,neural_network_change,341.47034477884534
+5,random_forest_change,1111.7858141313664

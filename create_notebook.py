@@ -6,14 +6,14 @@ nb = nbf.v4.new_notebook()
 cells = []
 def md(s): cells.append(nbf.v4.new_markdown_cell(s.strip()))
 def code(s): cells.append(nbf.v4.new_code_cell(s.strip()))
-md('''# U.S. gasoline supply, demand, and stocks
+md('''# U.S. total gasoline supply, demand, and stocks
 ## An auditable comparison of monthly PADD models
 
 **Question:** Can gasoline supply-and-demand history predict next month's ending stocks better than simply carrying the latest stock level forward?
 
 We build one model for each of the five Petroleum Administration for Defense Districts (PADDs), then sum their predictions. We compare **11 approaches**, choose on **10 expanding time-series folds**, and evaluate on a **separate final 24-month holdout**. We also produce and backtest recursive 12-month supply, demand, balance, and stock paths.
 
-**Scope:** The modeled product is **finished motor gasoline**. Total motor gasoline includes blending components and is a much larger inventory pool. It is shown as context, not substituted into the finished-product balance. This notebook does not predict RBOB prices or total gasoline stocks.
+**Scope:** The modeled product is **total motor gasoline: finished motor gasoline plus motor gasoline blending components**. The target is the independently published EIA total stock series (`MGTSTP`). Supply and disposition combine both product balances, including blending-component refinery/blender net inputs. This notebook does not predict RBOB prices.
 
 Read in order: data and definitions → historical balance → forecast timing → candidate models → validation → holdout results → 12-month outlook → limitations and reproducibility.''')
 code('''from pathlib import Path
@@ -37,13 +37,13 @@ pd.set_option('display.float_format', lambda v: f'{v:,.2f}')
 OUTPUT = HERE / 'model_output' ''')
 md('''## 1. Sources, units, and product boundary
 
-EIA publishes month-end stocks and calendar-month supply/disposition volumes. Everything in the model is measured in **thousand barrels (kb)**; charts use **million barrels (kb / 1,000)**. Product supplied is a consumption proxy derived from the petroleum balance, not an independent measure of retail sales. Refinery/blender production is net production, so refinery input should not be subtracted a second time.
+EIA publishes month-end stocks and calendar-month supply/disposition volumes. Everything in the model is measured in **thousand barrels (kb)**; charts use **million barrels (kb / 1,000)**. Product supplied is a consumption proxy derived from the petroleum balance, not an independent measure of retail sales. For the total gasoline boundary, net refinery/blender production equals finished gasoline net production **minus blending-component refinery/blender net inputs**. This offsets internal conversion into finished gasoline instead of counting it as new total gasoline supply.
 
 Source references: [EIA balance definitions](https://www.eia.gov/dnav/pet/TblDefs/pet_sum_snd_tbldef2.asp), [PADD 1 balance table](https://www.eia.gov/dnav/pet/pet_sum_snd_d_r10_mbbl_m_cur.htm), and [total motor gasoline definition](https://www.eia.gov/dnav/pet/TblDefs/pet_sum_sndw_tbldef2.asp).
 
-`gasoline_data.py` downloads 50 EIA spreadsheets: ten series for each PADD. Original XLS files, series titles, URLs, retrieval timestamps, and SHA-256 hashes are preserved under `data/`. The model uses history from January 2007. This matches the crude archive's starting period and avoids fitting across still earlier reporting regimes.
+The source manifest contains 95 product/region records: 93 EIA spreadsheets and two balance-page snapshots documenting no published blending-component biofuel-production series in PADDs 3 and 4. Those two inputs use flagged structural zeros. Original XLS files, series titles, URLs, retrieval timestamps, and SHA-256 hashes are preserved under `data/`. The model uses history from January 2007. This matches the crude archive's starting period and avoids fitting across still earlier reporting regimes.
 
-No-data-reported or absent cells in sparse imports, exports, and biofuel series are **assumed zero and flagged**. Withheld/unavailable text markers are not replaced. Core missing observations cause an error. The balance reconciliation below checks whether those assumptions are consistent with reported totals. A common complete endpoint is required across all five PADDs.''')
+No-data-reported or absent cells in sparse imports, exports, net receipts, and biofuel series are **assumed zero and flagged**. Withheld/unavailable text markers are not replaced. Core missing observations cause an error. The balance reconciliation below checks whether those assumptions are consistent with reported totals. A common complete endpoint is required across all five PADDs.''')
 code('''manifest = pd.read_json(HERE / 'data/source_manifest.json')
 display(manifest[manifest.padd.eq(1)][['component','series_id','title','url']])
 panel = load_panel(HERE / 'data')
@@ -60,13 +60,13 @@ S_t = S_{t-1} + P_t + I_t + N_t + A_t + B_t - D_t - X_t + \epsilon_t
 
 | Symbol | Meaning |
 |---|---|
-| S | Ending finished gasoline stocks |
-| P | Refinery and blender net production |
+| S | Ending total gasoline stocks (finished + blending components) |
+| P | Finished refinery/blender net production minus blending-component refinery/blender net inputs |
 | I / X | Imports / exports |
 | N | Net receipts from other PADDs; may be negative |
 | A | EIA supply adjustments; may be negative |
-| B | Biofuel plant net production of finished gasoline |
-| D | Product supplied |
+| B | Biofuel plant net production summed across finished gasoline and blending components |
+| D | Product supplied summed across both product categories |
 | ε | Remaining accounting/reporting difference |
 
 Flows in month **t** reconcile the change from **t−1 to t**. This corrects the timing of the earlier crude implementation for this new model. The crude model itself has only been relocated.
@@ -76,7 +76,7 @@ code('''checks = panel.groupby('padd').agg(
     maximum_balance_residual_kb=('accounting_residual_kb', lambda s: s.abs().max()),
     maximum_reported_change_difference_kb=('reported_change_residual_kb', lambda s: s.abs().max()))
 display(checks)
-assert checks.maximum_balance_residual_kb.max() <= 5
+assert checks.maximum_balance_residual_kb.max() <= 81
 fig, ax = plt.subplots(figsize=(12,3))
 for p, g in panel.groupby('padd'):
     ax.plot(g.month, g.accounting_residual_kb, label=f'PADD {p}', alpha=.7)
@@ -85,21 +85,21 @@ ax.legend(ncol=5); plt.show()''')
 code('''fig, axes = plt.subplots(1,2,figsize=(14,4))
 for p,g in panel.groupby('padd'):
     axes[0].plot(g.month, g.stock_kb/1000, label=f'{p}: {PADD_NAMES[p]}')
-context = panel.groupby('month')[['stock_kb','total_gasoline_stock_kb']].sum()
-(context/1000).rename(columns={'stock_kb':'Finished gasoline (modeled)',
-    'total_gasoline_stock_kb':'Total gasoline (context)'}).plot(ax=axes[1])
-axes[0].set_title('Finished gasoline stocks by PADD'); axes[0].legend(fontsize=8)
-axes[1].set_title('Product definitions materially change inventory levels')
+context = panel.groupby('month')[['stock_kb','finished_stock_kb','blending_stock_kb']].sum()
+(context/1000).rename(columns={'stock_kb':'Total gasoline (modeled)',
+    'finished_stock_kb':'Finished gasoline component', 'blending_stock_kb':'Blending components'}).plot(ax=axes[1])
+axes[0].set_title('Total gasoline stocks by PADD'); axes[0].legend(fontsize=8)
+axes[1].set_title('Total gasoline and its constituent inventories')
 for ax in axes: ax.set_ylabel('Million barrels')
 plt.tight_layout(); plt.show()''')
-md('''The historical stock levels change substantially over time. A model can obtain a high stock-level R² by following this slow movement while still doing poorly on monthly changes. We therefore select on MAE and compare with persistence, inspect annual folds, and report a recent untouched holdout.''')
+md('''The total stock series matches the sum of finished and blending-component stocks within 1 kb. January 2026 has reported-stock-change versus stock-level discrepancies of +66, -43, and -81 kb in PADDs 1, 3, and 5 respectively; these source differences remain visible. The historical stock levels change substantially over time. A model can obtain a high stock-level R² by following this slow movement while still doing poorly on monthly changes. We therefore select on MAE and compare with persistence, inspect annual folds, and report a recent untouched holdout.''')
 md('''## 3. What information does a forecast use?
 
 Each row predicts stock in month **t**, using observed stocks and flows only through **t−1**, plus the known calendar month of t. Features include the last stock, the same month's stock a year earlier, the latest stock change, signed lagged flows, and sine/cosine month terms.
 
 This is a **conditional monthly forecast**, not a real-time vintage backtest. EIA publishes monthly data with a delay and later revises it. The experiment assumes prior-month observations are available; it does not claim that all features were available at the start of each calendar month. July and August 2026 outlook rows are projections beyond June's observed data, even though those calendar months have passed at the time of preparation.
 
-The flow-accounting baseline separately forecasts every target-month flow using only earlier observations: the last 60 months of **daily rates**, a linear trend, and month fixed effects. Rates are multiplied by target-month days. Trade, demand, and main production forecasts have a zero floor; signed adjustments, receipts, and biofuel net production retain their signs.''')
+The flow-accounting baseline separately forecasts every target-month flow using only earlier observations: the last 60 months of **daily rates**, a linear trend, and month fixed effects. Rates are multiplied by target-month days. Trade and demand forecasts have a zero floor; net refinery production, adjustments, receipts, and biofuel net production retain their signs. In particular, blending-component net inputs may be negative, indicating net production of blendstocks.''')
 code('''example = supervised(panel[panel.padd.eq(1)].reset_index(drop=True))
 display(example[['origin_month','month','stock_lag1','stock_lag12','lag_production_kb',
                  'forecast_flow_identity','actual_kb']].tail(5))
@@ -178,7 +178,7 @@ display(Markdown(f"**Finding:** Selected PADD models produce a U.S. holdout MAE 
     f"versus **{naive_mae:,.0f} kb** for unchanged stocks: **{improvement:.1f}% improvement**. "
     f"The lowest observed national holdout MAE belongs to `{best_holdout.model}` "
     f"({best_holdout.mae_kb:,.0f} kb), but that hindsight result is not used to switch the model. "
-    "The selected model's modest gain does not establish a reliable trading edge."))''')
+    "Historical inventory accuracy does not establish a reliable trading edge."))''')
 code('''predictions = tables['us_predictions']
 holdout = predictions[predictions.split.eq('holdout')]
 fig, axes = plt.subplots(2,1,figsize=(12,7),sharex=True)
@@ -187,7 +187,7 @@ axes[0].plot(actual.month,actual.actual_kb/1000,color='black',label='Actual',lin
 for name in ['selected_padd_models','persistence','forecast_flow_identity']:
     g = holdout[holdout.model.eq(name)]
     axes[0].plot(g.month,g.predicted_kb/1000,label=name,alpha=.8)
-axes[0].set(ylabel='Million barrels',title='U.S. finished gasoline stocks: final holdout'); axes[0].legend()
+axes[0].set(ylabel='Million barrels',title='U.S. total gasoline stocks: final holdout'); axes[0].legend()
 axes[1].bar(actual.month,(actual.predicted_kb-actual.actual_kb)/1000,width=20)
 axes[1].axhline(0,color='black'); axes[1].set(ylabel='Forecast − actual (million bbl)',title='Selected-model errors')
 plt.tight_layout(); plt.show()''')
@@ -200,7 +200,7 @@ code('''history = tables['us_monthly_model']
 jodi = tables['jodi_us_benchmark']
 print('Latest JODI archive month:', jodi.month.max().date())
 fig, ax = plt.subplots(figsize=(12,4))
-for col,label in [('stock_kb','EIA finished gasoline'),('total_gasoline_stock_kb','EIA total gasoline'),
+for col,label in [('stock_kb','EIA total gasoline (modeled)'),('finished_stock_kb','EIA finished gasoline component'),
                   ('jodi_CLOSTLV','JODI gasoline (different scope)')]:
     ax.plot(history.month,history[col]/1000,label=label)
 ax.set(ylabel='Million barrels',title='National context: preserve product-definition differences')
@@ -246,9 +246,9 @@ for ax in axes.flat: ax.tick_params(axis='x',rotation=30)
 plt.tight_layout(); plt.show()''')
 md('''## 11. What to conclude, and how to reproduce
 
-The balance reconstruction is sound, but its small residual is not evidence of predictive power. The selected one-month model only modestly beats persistence nationally on the final holdout. Negative holdout R² indicates errors larger than variation around the holdout mean; that mean is a hindsight benchmark, not an available forecast. The much higher development stock-level R² should not override this evidence.
+The balance reconstruction is sound, but its small residual is not evidence of predictive power. For this total-gasoline run, the selected regional models reduce national holdout MAE from about 8,469 kb to 4,247 kb (49.9%); holdout R² is about 0.80. The forecast-flow identity has still lower holdout MAE, but it was not chosen retrospectively to replace the development-selected models. These results concern a larger, different inventory boundary and are not directly comparable to the old finished-only error levels.
 
-The 12-month paths are **conditional point forecasts**, with limited recursive validation and no calibrated intervals. Finished gasoline is only part of the gasoline inventory system. Forecasts of total gasoline would require a separate blending-component balance and model. JODI comparisons retain their differing product scope. Sparse-flow zero assumptions, historical revisions, reporting changes, and publication lags remain limitations.
+The 12-month paths are **conditional point forecasts**, with limited recursive validation and no calibrated intervals. The target and all balance flows now cover total motor gasoline. Constituent stocks reconcile to the independent total series within 1 kb. The complete balance has January 2026 stock-level/reporting discrepancies of +66 kb (PADD 1), -43 kb (PADD 3), and -81 kb (PADD 5); other monthly residuals are at rounding/reporting scale. These are retained rather than forced to zero. JODI comparisons retain their differing product scope. Sparse-flow zero assumptions, historical revisions, reporting changes, and publication lags remain limitations.
 
 **Reproduce from this directory:**
 
@@ -437,9 +437,10 @@ For a year-long path, forecast all flows using history at the origin. Then predi
 
 Check source hashes, finished versus total gasoline stocks, forecast timing, national aggregation, and separation of development targets from the final evaluation period. These checks run on the same inputs and outputs just used for the analysis.'''))
         expanded.append(python("""for entry in json.loads((HERE/'data/source_manifest.json').read_text()):
-    source_bytes=(HERE/'data/raw'/f"{entry['series_id']}m.xls").read_bytes()
+    source_bytes=(HERE/'data/raw'/entry['source_file']).read_bytes()
     assert hashlib.sha256(source_bytes).hexdigest()==entry['sha256']
-assert (panel.total_gasoline_stock_kb >= panel.stock_kb).all()
+np.testing.assert_allclose(panel.stock_kb, panel.finished_stock_kb + panel.blending_stock_kb, atol=1, rtol=0)
+np.testing.assert_allclose(panel.production_kb, panel.finished_production_kb-panel.blending_net_inputs_kb)
 check_history=panel[panel.padd.eq(1)].iloc[:40].copy()
 before=supervised(check_history)
 check_history.loc[check_history.index[-1],FLOWS+['stock_kb']]+=100000
