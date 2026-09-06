@@ -10,6 +10,7 @@ import pandas as pd
 import sklearn
 import xgboost
 from sklearn.exceptions import ConvergenceWarning
+from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neural_network import MLPRegressor
@@ -17,7 +18,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures, SplineTransformer
 from sklearn.compose import TransformedTargetRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-from sklearn.model_selection import TimeSeriesSplit
+from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 from xgboost import XGBRegressor
 from gasoline_data import HERE, PADD_NAMES, FLOWS, SIGNS, load_panel, refresh_data
 
@@ -28,6 +29,67 @@ LEARNED = ['constrained_level', 'ridge_change', 'seasonal_ridge_change',
 MODELS = BASELINES + LEARNED
 BASE_FEATURES = ['stock_lag1', 'stock_lag12', 'change_lag1'] + ['lag_' + c for c in FLOWS]
 FEATURES = BASE_FEATURES + ['sin_month', 'cos_month']
+
+
+def parameter_grid(name):
+    """Conventional compact grids for each tunable model family."""
+    if name in ['ridge_change', 'seasonal_ridge_change']:
+        return {'ridge__alpha': [0.01, 0.1, 1, 10, 100, 1000]}
+    if name == 'polynomial_ridge_change':
+        return {'polynomialfeatures__degree': [1, 2], 'ridge__alpha': [1, 10, 100, 1000]}
+    if name == 'spline_ridge_change':
+        return {'splinetransformer__n_knots': [3, 5, 7],
+                'splinetransformer__degree': [2, 3], 'ridge__alpha': [1, 100, 1000]}
+    if name == 'random_forest_change':
+        return {'n_estimators': [100, 200], 'max_depth': [3, 5, None],
+                'min_samples_leaf': [5, 12]}
+    if name == 'xgboost_change':
+        return {'n_estimators': [100, 200], 'max_depth': [2, 4],
+                'learning_rate': [0.01, 0.05, 0.1], 'reg_lambda': [1, 30]}
+    if name == 'neural_network_change':
+        return {'regressor__mlpregressor__hidden_layer_sizes': [(16,), (32,), (32, 16)],
+                'regressor__mlpregressor__alpha': [0.01, 1, 10]}
+    return {}
+
+
+class StockRegressor(RegressorMixin, BaseEstimator):
+    """Let GridSearchCV score the final stock-level forecast."""
+    def __init__(self, name, model):
+        self.name = name
+        self.model = model
+
+    def fit(self, X, y):
+        from sklearn.base import clone
+        target = X.actual_kb if self.name == 'constrained_level' else X.delta_kb
+        self.model_ = clone(self.model).fit(X[columns(self.name)], target)
+        return self
+
+    def predict(self, X):
+        return predict(self.name, self.model_, X)
+
+
+def tune(name, train, folds=10, jobs=8, splits=None):
+    """Search past-only folds and retain every candidate's scores."""
+    grid = parameter_grid(name)
+    if not grid:
+        return {}, pd.DataFrame(), ''
+    cv = splits if splits is not None else TimeSeriesSplit(n_splits=folds)
+    search = GridSearchCV(StockRegressor(name, estimator(name)),
+        {'model__' + key: value for key, value in grid.items()},
+        scoring='neg_mean_absolute_error', cv=cv, n_jobs=jobs,
+        refit=False, error_score='raise', return_train_score=True)
+    from joblib import parallel_backend
+    from threadpoolctl import threadpool_limits
+    with warnings.catch_warnings(record=True) as caught, threadpool_limits(limits=1), parallel_backend('threading'):
+        warnings.simplefilter('always', ConvergenceWarning)
+        search.fit(train, train.actual_kb)
+    results = pd.DataFrame(search.cv_results_)
+    results['params'] = results.params.map(
+        lambda p: json.dumps({k.removeprefix('model__'): v for k,v in p.items()}, sort_keys=True))
+    results['mean_test_mae_kb'] = -results.mean_test_score
+    params = {k.removeprefix('model__'): v for k,v in search.best_params_.items()}
+    warning = '; '.join(sorted({str(w.message) for w in caught}))
+    return params, results, warning
 
 
 def seasonal_design(months, origin):
@@ -105,10 +167,12 @@ def estimator(name):
     raise ValueError(name)
 
 
-def fit(name, train):
+def fit(name, train, params=None):
     if name in BASELINES:
         return None, ''
     model = estimator(name)
+    if params:
+        model.set_params(**params)
     target = 'actual_kb' if name == 'constrained_level' else 'delta_kb'
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter('always', ConvergenceWarning)
@@ -135,18 +199,27 @@ def score(actual, predicted):
             'r2': r2_score(actual, predicted), 'n': len(actual)}
 
 
-def evaluate(samples, folds=10, holdout=24):
+def evaluate(samples, folds=10, holdout=24, jobs=8):
     """Choose models only on development CV; score untouched final 24 months."""
     predictions, fold_metrics, selections, fitted, warning_rows = [], [], [], {}, []
+    best_parameters, searches = {}, []
     for padd, frame in samples.items():
         development = frame.iloc[:-holdout]
         if len(development) - folds*12 < 36:
             raise ValueError('Need >=36 initial training months plus 10 annual folds and holdout')
         splits = list(TimeSeriesSplit(n_splits=folds, test_size=12).split(development))
         for name in MODELS:
+            params, results, warning = tune(name, development, folds, jobs, splits)
+            best_parameters[padd, name] = params
+            if not results.empty:
+                searches.append(results.assign(padd=padd, model=name, stage='development',
+                    train_end=development.month.max()))
+                print(f'PADD {padd} {name}: grid MAE {results.mean_test_mae_kb.min():,.1f}; {params}', flush=True)
+            if warning:
+                warning_rows.append(dict(padd=padd, model=name, stage='grid_search', warning=warning))
             for fold, (tr, te) in enumerate(splits, 1):
                 train, test = development.iloc[tr], development.iloc[te]
-                model, warning = fit(name, train)
+                model, warning = fit(name, train, params)
                 pred = predict(name, model, test)
                 fold_metrics.append(dict(padd=padd, model=name, fold=fold,
                     train_end=train.month.max(), test_start=test.month.min(), test_end=test.month.max(),
@@ -164,7 +237,7 @@ def evaluate(samples, folds=10, holdout=24):
         winner = losses.idxmin()
         selections.append(dict(padd=padd, selected_model=winner, cv_mae_kb=losses[winner]))
         for name in MODELS:
-            model, warning = fit(name, development)
+            model, warning = fit(name, development, best_parameters[padd, name])
             test = frame.iloc[-holdout:]
             output = test[['month', 'origin_month', 'actual_kb']].copy()
             output['predicted_kb'] = predict(name, model, test)
@@ -172,14 +245,15 @@ def evaluate(samples, folds=10, holdout=24):
             predictions.append(output)
             if warning:
                 warning_rows.append(dict(padd=padd, model=name, stage='holdout', warning=warning))
-        final, warning = fit(winner, frame)
+        final, warning = fit(winner, frame, best_parameters[padd, winner])
         fitted[padd] = {'name': winner, 'estimator': final}
         if warning:
             warning_rows.append(dict(padd=padd, model=winner, stage='final', warning=warning))
         print(f'PADD {padd}: selected {winner}; CV MAE {losses[winner]:,.1f} kb', flush=True)
     return (pd.concat(predictions, ignore_index=True), pd.DataFrame(fold_metrics),
             pd.DataFrame(selections), fitted,
-            pd.DataFrame(warning_rows, columns=['padd','model','stage','warning']))
+            pd.DataFrame(warning_rows, columns=['padd','model','stage','warning']),
+            best_parameters, pd.concat(searches, ignore_index=True))
 
 
 def aggregate(frame, keys, additive):
@@ -227,13 +301,13 @@ def metric_table(predictions, keys):
         **score(g.actual_kb, g.predicted_kb)} for k,g in predictions.groupby(keys)])
 
 
-def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10):
+def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10, jobs=8):
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
     panel = load_panel(data_dir)
     histories = {p: panel[panel.padd.eq(p)].reset_index(drop=True) for p in PADD_NAMES}
     samples = {p: supervised(history) for p,history in histories.items()}
-    predictions, fold_metrics, selection, fitted, fit_warnings = evaluate(samples, folds)
+    predictions, fold_metrics, selection, fitted, fit_warnings, best_parameters, grid_results = evaluate(samples, folds, jobs=jobs)
     selected = predictions.merge(selection[['padd','selected_model']], on='padd')
     selected = selected[selected.model.eq(selected.selected_model)].copy()
     selected['model'] = 'selected_padd_models'
@@ -249,7 +323,7 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10):
         cutoff = panel.month.max() - pd.DateOffset(months=offset)
         for p, state in fitted.items():
             train = samples[p][samples[p].month.le(cutoff)]
-            model, warning = fit(state['name'], train)
+            model, warning = fit(state['name'], train, best_parameters[p, state['name']])
             states[p] = {'name': state['name'], 'estimator': model}
             if warning:
                 fit_warnings.loc[len(fit_warnings)] = [p, state['name'], 'recursive_holdout', warning]
@@ -276,7 +350,10 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10):
         'padd_forecast_12m':regional,'us_forecast_12m':national,'latest_forecast':latest,
         'recursive_holdout_predictions':recursive,'us_recursive_holdout_predictions':us_recursive,
         'recursive_holdout_metrics':metric_table(recursive,['padd']),
-        'us_recursive_horizon_metrics':metric_table(us_recursive,['horizon']), 'fit_warnings':fit_warnings}
+        'us_recursive_horizon_metrics':metric_table(us_recursive,['horizon']), 'fit_warnings':fit_warnings,
+        'grid_search_results':grid_results,
+        'best_parameters':pd.DataFrame([{'padd':p, 'model':name, 'params':json.dumps(params, sort_keys=True)}
+            for (p,name),params in best_parameters.items()])}
     for name, frame in tables.items():
         frame.to_csv(output/f'{name}.csv', index=False)
     joblib.dump(fitted, output/'fitted_models.joblib')
@@ -292,7 +369,11 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10):
         'cv':f'{folds} expanding folds, 12 test months each; final 24 months excluded from selection',
         'holdout_start':str(samples[1].month.iloc[-24].date()),
         'forecast_timing':'One month after latest observed EIA month; conditional on prior monthly data being available. Current revised history, not a real-time release-vintage backtest.',
-        'selection':'Lowest pooled development CV MAE per PADD including baselines; fixed hyperparameters, no holdout tuning',
+        'selection':'GridSearchCV per PADD/model on development data; lowest pooled development CV MAE per PADD including baselines; no holdout tuning',
+        'hyperparameter_search':{'method':'GridSearchCV', 'folds':folds,
+            'scoring':'neg_mean_absolute_error', 'splitter':'TimeSeriesSplit with 12-month test blocks',
+            'evaluation':'Development scores reuse tuning folds and are selection scores, not nested CV estimates. Final 24 months excluded from every search.',
+            'recursive':'Holdout and final refits freeze parameters selected before the holdout.'},
         'flow_forecast':'Last 60 months, daily rates, linear trend and month fixed effects; net production remains signed',
         'components':'Flows sum finished and blending components; production is finished net production minus blending net inputs; stocks use independently published MGTSTP series',
         'forecast_stock_floor':0, 'uncertainty':'Point forecasts only; no calibrated prediction intervals',
@@ -303,7 +384,8 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10):
                    'https://www.eia.gov/dnav/pet/TblDefs/pet_sum_snd_tbldef2.asp',
                    'https://www.jodidata.org/oil/']}
     (output/'model_metadata.json').write_text(json.dumps(metadata,indent=2))
-    settings = {name: {'features': columns(name), 'estimator': repr(estimator(name))}
+    settings = {name: {'features': columns(name), 'estimator': repr(estimator(name)),
+                       'param_grid':parameter_grid(name)}
                 for name in LEARNED}
     (output/'candidate_models.json').write_text(json.dumps(settings, indent=2))
     print(us_metrics[us_metrics.split.eq('holdout')].sort_values('mae_kb').to_string(index=False))
@@ -316,7 +398,8 @@ if __name__ == '__main__':
     parser.add_argument('--data-dir', type=Path, default=HERE/'data')
     parser.add_argument('--output-dir', type=Path, default=HERE/'model_output')
     parser.add_argument('--cv-folds', type=int, default=10)
+    parser.add_argument('--jobs', type=int, default=8)
     args = parser.parse_args()
     if args.refresh_data:
         refresh_data(args.data_dir)
-    build_model(args.data_dir,args.output_dir,args.cv_folds)
+    build_model(args.data_dir,args.output_dir,args.cv_folds,args.jobs)

@@ -1,6 +1,6 @@
 padd,selected_model,cv_mae_kb
-1,spline_ridge_change,2754.787196802559
-2,neural_network_change,1601.034330555021
-3,neural_network_change,2394.226167150889
-4,neural_network_change,341.47034477884534
-5,random_forest_change,1111.7858141313664
+1,xgboost_change,2739.8263346354165
+2,neural_network_change,1570.7277735988314
+3,ridge_change,2359.1343706863254
+4,xgboost_change,340.5110148111979
+5,random_forest_change,1091.7056960645562

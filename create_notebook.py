@@ -1,5 +1,6 @@
 """Generate the readable analysis notebook; execute it with nbclient after generation."""
 from pathlib import Path
+import argparse
 import nbformat as nbf
 HERE = Path(__file__).resolve().parent
 nb = nbf.v4.new_notebook()
@@ -105,9 +106,9 @@ display(example[['origin_month','month','stock_lag1','stock_lag12','lag_producti
                  'forecast_flow_identity','actual_kb']].tail(5))
 assert (example.origin_month < example.month).all()
 # Notice: actual_kb is the outcome, never a feature passed to a fitted estimator.''')
-md('''## 4. Candidate models and fixed settings
+md('''## 4. Candidate models and optimized settings
 
-These settings are declared before examining the holdout. All learned models are fitted separately by PADD. Scaling and feature transformations fit only on each training fold. All stock forecasts are floored at zero.
+All learned models are fitted and tuned separately by PADD. Scaling and feature transformations fit only on each training fold. All stock forecasts are floored at zero.
 
 | Model | What is tested | Complexity control |
 |---|---|---|
@@ -123,16 +124,18 @@ These settings are declared before examining the holdout. All learned models are
 | XGBoost change | Boosted shallow trees predicting stock change | 120 trees, depth 2, learning rate .03, L2=30 |
 | Neural network change | Small nonlinear stock-change model | 16 hidden units, α=10; feature and target scaling |
 
-The unconstrained stock-change models are predictive associations, not causal flow elasticities. The constrained coefficients apply to **lagged** flows and are not the contemporaneous accounting identity. The neural net uses deterministic L-BFGS fitting, with convergence warnings exported instead of hidden. Full settings are inspectable below.''')
+The table shows the starting specifications. `parameter_grid` below lists the search ranges. Ridge penalties, polynomial degree, spline knots and degree, forest size/depth/leaves, boosted-tree size/depth/rate/penalty, and neural-network size/penalty are searched with **GridSearchCV and ten chronological folds**. The objective is stock-level MAE. Baselines and constrained OLS retain their structural definitions.
+
+The unconstrained stock-change models are predictive associations, not causal flow elasticities. The constrained coefficients apply to **lagged** flows and are not the contemporaneous accounting identity. The neural net uses deterministic L-BFGS fitting, with convergence warnings exported instead of hidden. Full settings and grids are inspectable below.''')
 code('''# Inspect any candidate and its exact feature list without opening another notebook.
 print('XGBoost features:', columns('xgboost_change'))
 print(estimator('xgboost_change'))
 print(estimator('neural_network_change'))''')
 md('''## 5. Run the complete experiment
 
-This cell rebuilds all results from the saved source snapshots; it does not download data or change the shared database. On an ordinary machine it may take a few minutes. To refresh EIA first, run `python us_snd_model.py --refresh-data` from this directory.
+This cell rebuilds all results from the saved source snapshots; it does not download data or change the shared database. Grid search can take several minutes. To refresh EIA first, run `python us_snd_model.py --refresh-data` from this directory.
 
-Development validation uses ten consecutive 12-month test blocks, with an expanding earlier training set. The final 24 months are excluded from selection. Within each test block, model parameters stay fixed while the previous month's observed information updates, so these are one-step predictions. The forecast-flow baseline refits its unchanging seasonal rule using information before each target.
+Development validation uses ten consecutive 12-month test blocks, with an expanding earlier training set. GridSearchCV selects parameters on these folds. The final 24 months are excluded from every search and from model selection. Within each test block, the selected parameters stay fixed while the previous month's observed information updates, so these are one-step predictions. The forecast-flow baseline refits its seasonal rule using information before each target.
 
 We choose the lowest pooled CV MAE per PADD, **including baselines**. After selection, all candidate models are evaluated on the holdout for comparison; that comparison is not used to change the selected model. Finally, selected models are refitted on all observations for the outlook.''')
 code('''tables = build_model(HERE / 'data', OUTPUT)
@@ -149,6 +152,12 @@ md('''## 6. Development results and overfitting diagnostics
 
 MAE is the average absolute error in thousand barrels; smaller is better. RMSE penalizes occasional large misses more heavily. The train/test gap helps identify excessive flexibility, although the changing data regime also affects it. The selected combination's CV score is optimistic because it is used for model selection; use the final holdout to assess generalization.''')
 code('''display(tables['selected_models'])
+selected_parameters = (tables['selected_models']
+    .merge(tables['best_parameters'], left_on=['padd','selected_model'], right_on=['padd','model'])
+    [['padd','selected_model','cv_mae_kb','params']])
+display(Markdown('### Best parameters for the selected PADD models'))
+with pd.option_context('display.max_colwidth',None):
+    display(selected_parameters)
 cv = tables['padd_model_metrics'].query("split == 'cv' and model != 'selected_padd_models'")
 display(cv.pivot(index='model', columns='padd', values='mae_kb').style.highlight_min(axis=0))
 gaps = folds.groupby('model')[['train_mae_kb','mae_kb']].mean().sort_values('mae_kb')
@@ -246,7 +255,7 @@ for ax in axes.flat: ax.tick_params(axis='x',rotation=30)
 plt.tight_layout(); plt.show()''')
 md('''## 11. What to conclude, and how to reproduce
 
-The balance reconstruction is sound, but its small residual is not evidence of predictive power. For this total-gasoline run, the selected regional models reduce national holdout MAE from about 8,469 kb to 4,247 kb (49.9%); holdout R² is about 0.80. The forecast-flow identity has still lower holdout MAE, but it was not chosen retrospectively to replace the development-selected models. These results concern a larger, different inventory boundary and are not directly comparable to the old finished-only error levels.
+The balance reconstruction is sound, but its small residual is not evidence of predictive power. The result cells above calculate current performance directly from the optimized run. The forecast-flow identity may rank differently on the holdout, but holdout rankings are not used retrospectively to replace the development-selected models. Development scores reuse the tuning folds and therefore describe selection, not nested-CV generalization performance.
 
 The 12-month paths are **conditional point forecasts**, with limited recursive validation and no calibrated intervals. The target and all balance flows now cover total motor gasoline. Constituent stocks reconcile to the independent total series within 1 kb. The complete balance has January 2026 stock-level/reporting discrepancies of +66 kb (PADD 1), -43 kb (PADD 3), and -81 kb (PADD 5); other monthly residuals are at rounding/reporting scale. These are retained rather than forced to zero. JODI comparisons retain their differing product scope. Sparse-flow zero assumptions, historical revisions, reporting changes, and publication lags remain limitations.
 
@@ -259,7 +268,7 @@ python us_snd_model.py --refresh-data   # refresh EIA and snapshot JODI from Duc
 python -m pytest -q
 ```
 
-Use **Run All** to regenerate the analysis and tables in this notebook. `model_output/` contains regional/national histories, every fold prediction, fold and holdout metrics, chosen models, regression coefficients, fitting warnings, recursive holdout results, the 12-month forecasts, metadata, and serialized final selected models. `data/` preserves downloaded inputs and provenance. The shared database is read-only throughout.''')
+Use **Run All** to regenerate the analysis and tables in this notebook. `model_output/` contains regional/national histories, every fold prediction, fold and holdout metrics, grid-search scores, best parameters, chosen models, regression coefficients, fitting warnings, recursive holdout results, the 12-month forecasts, metadata, and serialized final selected models. `data/` preserves downloaded inputs and provenance. The shared database is read-only throughout.''')
 code('''display(pd.Series(metadata, name='Configuration'))
 print('Saved result files:')
 for path in sorted(OUTPUT.iterdir()):
@@ -275,7 +284,7 @@ import textwrap
 model_source=(HERE/'us_snd_model.py').read_text()
 data_source=(HERE/'gasoline_data.py').read_text()
 def definition(source,name):
-    node=next(n for n in ast.parse(source).body if isinstance(n,ast.FunctionDef) and n.name==name)
+    node=next(n for n in ast.parse(source).body if isinstance(n,(ast.FunctionDef,ast.ClassDef)) and n.name==name)
     return ast.get_source_segment(source,node)
 def definitions(source,*names):
     return '\n\n\n'.join(definition(source,n) for n in names)
@@ -290,6 +299,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import requests, duckdb, joblib, sklearn, xgboost
 from sklearn.exceptions import ConvergenceWarning
+from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.ensemble import RandomForestRegressor, VotingRegressor
 from sklearn.neural_network import MLPRegressor
@@ -297,7 +307,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures, SplineTransformer
 from sklearn.compose import TransformedTargetRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-from sklearn.model_selection import TimeSeriesSplit
+from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 from xgboost import XGBRegressor
 from IPython.display import display, Markdown
 
@@ -388,9 +398,11 @@ The downloader below preserves the XLS source bytes and their hashes, normalizes
           markdown('''### Exact model definitions
 
 These constants specify the feature sets. `estimator` declares every learned model and its settings. `fit` chooses stock level or stock change as the target; `predict` converts changes back into levels and implements the simple baselines.'''),
-          python(model_source[model_source.index('BASELINES ='):model_source.index('\n\ndef seasonal_design')]),
+          python(model_source[model_source.index('BASELINES ='):model_source.index('\n\ndef parameter_grid')]),
           python(definitions(model_source,'columns','estimator')),
           python(definitions(model_source,'fit','predict')),
+          python(definitions(model_source,'parameter_grid','StockRegressor','tune')),
+          python("display(pd.DataFrame([{'model':name,'param_grid':parameter_grid(name)} for name in LEARNED]))"),
           markdown('''### How errors and national totals are calculated
 
 MAE averages absolute errors; RMSE squares errors before averaging and taking a square root; R² compares squared errors with variation around the evaluation sample mean. `aggregate` checks five distinct PADDs for every key before summing—regional MAEs are never added to obtain national MAE.'''),
@@ -424,7 +436,7 @@ The implementation below fits transformations and models separately in each trai
 
 For a year-long path, forecast all flows using history at the origin. Then predict one stock at a time and append that predicted month to the history used for the next step. The raw balance path and statistical stock path remain separate, with an explicit reconciliation difference.'''),
           python(definition(model_source,'forecast')),
-          python("data_dir=HERE/'data'\noutput_dir=OUTPUT\nfolds=10")])
+          python("data_dir=HERE/'data'\noutput_dir=OUTPUT\nfolds=10\njobs=8")])
         for block,(title,explanation),display_code in zip(blocks,run_explanations,run_displays):
             expanded.extend([markdown('### '+title+'\n\n'+explanation),python(block+'\n\n'+display_code)])
         continue
@@ -457,5 +469,18 @@ cells=expanded
 nb.cells = cells
 nb.metadata = {'kernelspec':{'display_name':'Python 3','language':'python','name':'python3'},
                'language_info':{'name':'python','version':'3.13'}}
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--preserve-outputs',action='store_true',
+    help='Keep execution outputs for unchanged code cells when updating notebook source.')
+args=parser.parse_args()
+if args.preserve_outputs and (HERE/'us_snd_model_results.ipynb').exists():
+    old=nbf.read(HERE/'us_snd_model_results.ipynb',as_version=4)
+    prior={c.source:c for c in old.cells if c.cell_type=='code'}
+    for cell in nb.cells:
+        if cell.cell_type=='code' and cell.source in prior:
+            previous=prior[cell.source]
+            cell.outputs=previous.outputs
+            cell.execution_count=previous.execution_count
+            cell.metadata=previous.metadata
 nbf.write(nb,HERE/'us_snd_model_results.ipynb')
 print(f'Created {len(cells)} cells')

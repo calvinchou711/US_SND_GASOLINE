@@ -62,21 +62,48 @@ Eleven approaches are compared on identical dates: persistence, seasonal naive,
 forecast-flow accounting, constrained regression, ridge and seasonal ridge changes,
 polynomial and spline ridge, random forest, XGBoost, and a small neural network.
 
-Ten expanding annual development folds span **July 2014–June 2024**. Model choice
-uses pooled development MAE per PADD; the final **July 2024–June 2026** period is
-excluded from selection. Selected PADD models are spline ridge, neural network,
-neural network, neural network, and random forest respectively.
+Ten expanding annual development folds span **July 2014–June 2024**. GridSearchCV
+optimizes each tunable family separately by PADD using stock-level MAE. Model choice
+then uses pooled development MAE per PADD; the final **July 2024–June 2026** period
+is excluded from every search and from model selection. Selected PADD models are
+XGBoost, neural network, ridge, XGBoost, and random forest respectively.
 
-The selected national holdout MAE is **4,247 kb**, versus **8,469 kb** for
-persistence (**49.9% lower**); holdout R² is about **0.80**. Forecast-flow accounting
-has lower holdout MAE (3,759 kb), but the holdout ranking is not used to switch
-models after selection. These total-gasoline errors are not directly comparable
-to the much smaller finished-only stock target's prior errors.
+| PADD | Selected model | Best parameters |
+|---|---|---|
+| 1 | XGBoost | 100 trees, depth 2, learning rate 0.05, L2 1 |
+| 2 | Neural network | hidden layers (32, 16), alpha 10 |
+| 3 | Ridge | alpha 10 |
+| 4 | XGBoost | 100 trees, depth 2, learning rate 0.05, L2 30 |
+| 5 | Random forest | 100 trees, depth 5, minimum leaf 5 |
+
+The optimized selected-model national holdout MAE is **4,532 kb**, versus **8,469
+kb** for persistence (**46.5% lower**); holdout R² is about **0.76**. Forecast-flow
+accounting has lower holdout MAE (3,759 kb), but the holdout ranking is not used to
+switch models after selection. Development scores reuse the tuning folds and are
+selection diagnostics rather than nested-CV estimates.
 
 The outlook spans **July 2026–June 2027**. Selected total gasoline stocks reach
-about **223.56 million barrels** in June 2027 versus **219.44 million barrels**
+about **225.90 million barrels** in June 2027 versus **219.44 million barrels**
 observed in June 2026. Two disjoint 12-month holdout paths test recursion separately;
 that is limited long-horizon evidence, with no calibrated prediction intervals.
+
+## Parameter grids
+
+Each row is a Cartesian product. Other estimator settings remain as declared in
+`estimator()`; `candidate_models.json` exports both those settings and the grids.
+
+| Model | Search values |
+|---|---|
+| Ridge and seasonal ridge | alpha: 0.01, 0.1, 1, 10, 100, 1000 |
+| Polynomial ridge | degree: 1, 2; alpha: 1, 10, 100, 1000 |
+| Spline ridge | knots: 3, 5, 7; degree: 2, 3; alpha: 1, 100, 1000 |
+| Random forest | trees: 100, 200; depth: 3, 5, unlimited; minimum leaf: 5, 12 |
+| XGBoost | trees: 100, 200; depth: 2, 4; learning rate: 0.01, 0.05, 0.1; L2: 1, 30 |
+| Neural network | hidden layers: (16), (32), (32,16); alpha: 0.01, 1, 10 |
+
+Constrained OLS and the three baselines have no parameter grid. Scaling and feature
+transformations are fitted separately within each training fold. The optimized
+parameters are frozen when models are refitted for the holdout and recursive tests.
 
 All predictive features use only earlier monthly data. Target-month flows are
 forecast from trailing 60-month daily rates with trend and month effects. EIA
@@ -89,7 +116,7 @@ Statistical stock change can differ from projected flow balance; exported
 
 ```bash
 python -m pip install -r requirements.txt
-python us_snd_model.py                  # saved snapshots
+python us_snd_model.py --cv-folds 10 --jobs 8  # saved snapshots and grid search
 python us_snd_model.py --refresh-data   # refresh EIA and snapshot local JODI
 python -m pytest -q
 ```
@@ -98,12 +125,19 @@ Run All in the notebook reproduces the entire analysis in place.
 `create_notebook.py` regenerates notebook source and clears saved outputs, so
 execute it again before publishing. It copies implementation code into ordinary
 cells at generation time; notebook execution requires only data and dependencies.
+`execute_notebook.py --render-saved` refreshes the notebook's reporting cells from
+completed CSV outputs without repeating the grid search.
 
 `model_output/` includes total-gasoline PADD/U.S. histories, constituent audit
 columns, all CV/holdout predictions, fold metrics, selected models, coefficients,
 recursive holdout diagnostics, latest/12-month forecasts, serialized models,
 configuration, and fit warnings. The database builder recognizes the four main
 history/forecast files under separate gasoline table names.
+
+`best_parameters.csv` contains the selected parameters for every PADD/model, and
+`grid_search_results.csv` retains every candidate's ten fold scores, ranks, and
+timings. The pre-search outputs are preserved locally under
+`model_output_before_grid_search_20260906/`.
 
 ## Website and GitHub
 
