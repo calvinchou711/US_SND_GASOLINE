@@ -85,6 +85,8 @@ def test_saved_grid_results_are_complete_and_match_refits():
     assert grids.train_end.max() < pd.Timestamp(metadata['holdout_start'])
     assert len([c for c in grids if c.startswith('split') and c.endswith('_test_score')]) == 10
     expected = sum(len(ParameterGrid(parameter_grid(name))) for name in LEARNED if parameter_grid(name))
+    assert len(grids) == expected * 5 * 7
+    grids = grids[grids.stage.eq('development')]
     assert len(grids) == expected * 5
     metrics = pd.read_csv(output / 'fold_metrics.csv').groupby(['padd', 'model']).mae_kb.mean()
     best_params = pd.read_csv(output / 'best_parameters.csv').set_index(['padd', 'model'])

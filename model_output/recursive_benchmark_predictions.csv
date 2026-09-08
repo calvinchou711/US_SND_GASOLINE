@@ -1,0 +1,241 @@
+padd,month,origin_month,horizon,predicted_kb,actual_kb,model
+1,2024-07-01,2024-06-01,1,56776.0,57679.0,persistence
+1,2024-08-01,2024-06-01,2,56776.0,59114.0,persistence
+1,2024-09-01,2024-06-01,3,56776.0,60994.0,persistence
+1,2024-10-01,2024-06-01,4,56776.0,54025.0,persistence
+1,2024-11-01,2024-06-01,5,56776.0,53952.0,persistence
+1,2024-12-01,2024-06-01,6,56776.0,60722.0,persistence
+1,2025-01-01,2024-06-01,7,56776.0,66423.0,persistence
+1,2025-02-01,2024-06-01,8,56776.0,65816.0,persistence
+1,2025-03-01,2024-06-01,9,56776.0,59836.0,persistence
+1,2025-04-01,2024-06-01,10,56776.0,59440.0,persistence
+1,2025-05-01,2024-06-01,11,56776.0,59838.0,persistence
+1,2025-06-01,2024-06-01,12,56776.0,63611.0,persistence
+2,2024-07-01,2024-06-01,1,48529.0,46445.0,persistence
+2,2024-08-01,2024-06-01,2,48529.0,45769.0,persistence
+2,2024-09-01,2024-06-01,3,48529.0,45417.0,persistence
+2,2024-10-01,2024-06-01,4,48529.0,44485.0,persistence
+2,2024-11-01,2024-06-01,5,48529.0,46688.0,persistence
+2,2024-12-01,2024-06-01,6,48529.0,52008.0,persistence
+2,2025-01-01,2024-06-01,7,48529.0,55950.0,persistence
+2,2025-02-01,2024-06-01,8,48529.0,59148.0,persistence
+2,2025-03-01,2024-06-01,9,48529.0,56197.0,persistence
+2,2025-04-01,2024-06-01,10,48529.0,49357.0,persistence
+2,2025-05-01,2024-06-01,11,48529.0,47766.0,persistence
+2,2025-06-01,2024-06-01,12,48529.0,48062.0,persistence
+3,2024-07-01,2024-06-01,1,86411.0,82236.0,persistence
+3,2024-08-01,2024-06-01,2,86411.0,79702.0,persistence
+3,2024-09-01,2024-06-01,3,86411.0,79231.0,persistence
+3,2024-10-01,2024-06-01,4,86411.0,80660.0,persistence
+3,2024-11-01,2024-06-01,5,86411.0,84157.0,persistence
+3,2024-12-01,2024-06-01,6,86411.0,87277.0,persistence
+3,2025-01-01,2024-06-01,7,86411.0,89911.0,persistence
+3,2025-02-01,2024-06-01,8,86411.0,81086.0,persistence
+3,2025-03-01,2024-06-01,9,86411.0,81895.0,persistence
+3,2025-04-01,2024-06-01,10,86411.0,85187.0,persistence
+3,2025-05-01,2024-06-01,11,86411.0,85659.0,persistence
+3,2025-06-01,2024-06-01,12,86411.0,83887.0,persistence
+4,2024-07-01,2024-06-01,1,8044.0,6895.0,persistence
+4,2024-08-01,2024-06-01,2,8044.0,6777.0,persistence
+4,2024-09-01,2024-06-01,3,8044.0,6835.0,persistence
+4,2024-10-01,2024-06-01,4,8044.0,6907.0,persistence
+4,2024-11-01,2024-06-01,5,8044.0,7997.0,persistence
+4,2024-12-01,2024-06-01,6,8044.0,8449.0,persistence
+4,2025-01-01,2024-06-01,7,8044.0,8875.0,persistence
+4,2025-02-01,2024-06-01,8,8044.0,8936.0,persistence
+4,2025-03-01,2024-06-01,9,8044.0,8714.0,persistence
+4,2025-04-01,2024-06-01,10,8044.0,7988.0,persistence
+4,2025-05-01,2024-06-01,11,8044.0,7608.0,persistence
+4,2025-06-01,2024-06-01,12,8044.0,7142.0,persistence
+5,2024-07-01,2024-06-01,1,32758.0,31125.0,persistence
+5,2024-08-01,2024-06-01,2,32758.0,29338.0,persistence
+5,2024-09-01,2024-06-01,3,32758.0,27296.0,persistence
+5,2024-10-01,2024-06-01,4,32758.0,26497.0,persistence
+5,2024-11-01,2024-06-01,5,32758.0,28236.0,persistence
+5,2024-12-01,2024-06-01,6,32758.0,29761.0,persistence
+5,2025-01-01,2024-06-01,7,32758.0,29969.0,persistence
+5,2025-02-01,2024-06-01,8,32758.0,28742.0,persistence
+5,2025-03-01,2024-06-01,9,32758.0,27571.0,persistence
+5,2025-04-01,2024-06-01,10,32758.0,26312.0,persistence
+5,2025-05-01,2024-06-01,11,32758.0,28014.0,persistence
+5,2025-06-01,2024-06-01,12,32758.0,30378.0,persistence
+1,2024-07-01,2024-06-01,1,55216.935494462385,57679.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2024-08-01,2024-06-01,2,54496.267358759396,59114.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2024-09-01,2024-06-01,3,55481.88612775821,60994.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2024-10-01,2024-06-01,4,51546.860089714864,54025.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2024-11-01,2024-06-01,5,50749.91953808395,53952.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2024-12-01,2024-06-01,6,54157.02614638893,60722.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-01-01,2024-06-01,7,58505.31056593262,66423.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-02-01,2024-06-01,8,56103.047232595054,65816.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-03-01,2024-06-01,9,49441.69476502048,59836.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-04-01,2024-06-01,10,48339.261055757124,59440.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-05-01,2024-06-01,11,50625.62502920605,59838.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-06-01,2024-06-01,12,51154.21662696102,63611.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2024-07-01,2024-06-01,1,47476.9643706271,46445.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2024-08-01,2024-06-01,2,46496.29750396349,45769.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2024-09-01,2024-06-01,3,46297.54889153459,45417.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2024-10-01,2024-06-01,4,45198.05253083026,44485.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2024-11-01,2024-06-01,5,47103.96356656815,46688.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2024-12-01,2024-06-01,6,50450.10014097119,52008.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-01-01,2024-06-01,7,54734.32015083024,55950.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-02-01,2024-06-01,8,54781.261585924374,59148.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-03-01,2024-06-01,9,51088.92700302425,56197.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-04-01,2024-06-01,10,50007.01742188141,49357.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-05-01,2024-06-01,11,46906.7631293141,47766.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-06-01,2024-06-01,12,46235.01394911079,48062.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2024-07-01,2024-06-01,1,85669.07737843423,82236.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2024-08-01,2024-06-01,2,84699.19033486862,79702.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2024-09-01,2024-06-01,3,84564.12276444936,79231.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2024-10-01,2024-06-01,4,84638.70401341548,80660.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2024-11-01,2024-06-01,5,85901.01867446599,84157.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2024-12-01,2024-06-01,6,88086.14108008378,87277.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-01-01,2024-06-01,7,90065.70311427319,89911.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-02-01,2024-06-01,8,89162.1893161253,81086.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-03-01,2024-06-01,9,86525.08668434204,81895.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-04-01,2024-06-01,10,87218.16063684462,85187.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-05-01,2024-06-01,11,86143.30259031452,85659.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-06-01,2024-06-01,12,85262.09087391979,83887.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2024-07-01,2024-06-01,1,7917.523769651986,6895.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2024-08-01,2024-06-01,2,7792.7543332570585,6777.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2024-09-01,2024-06-01,3,7676.021076004759,6835.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2024-10-01,2024-06-01,4,7606.931281236178,6907.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2024-11-01,2024-06-01,5,7862.875012173947,7997.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2024-12-01,2024-06-01,6,8086.128159437491,8449.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-01-01,2024-06-01,7,8317.661855866505,8875.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-02-01,2024-06-01,8,8200.007809281173,8936.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-03-01,2024-06-01,9,7924.433456482694,8714.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-04-01,2024-06-01,10,7675.015532871769,7988.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-05-01,2024-06-01,11,7478.207907885469,7608.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-06-01,2024-06-01,12,7322.7133147894265,7142.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2024-07-01,2024-06-01,1,32011.472312650225,31125.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2024-08-01,2024-06-01,2,30778.275595508163,29338.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2024-09-01,2024-06-01,3,29755.692474086416,27296.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2024-10-01,2024-06-01,4,29091.246734746182,26497.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2024-11-01,2024-06-01,5,30620.959717886195,28236.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2024-12-01,2024-06-01,6,31933.680587615494,29761.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-01-01,2024-06-01,7,33410.943352036316,29969.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-02-01,2024-06-01,8,31898.225419637783,28742.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-03-01,2024-06-01,9,30572.603924240204,27571.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-04-01,2024-06-01,10,30164.862437722164,26312.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-05-01,2024-06-01,11,29825.991788887142,28014.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-06-01,2024-06-01,12,29615.00588982985,30378.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-07-01,2025-06-01,1,63611.0,58368.0,persistence
+1,2025-08-01,2025-06-01,2,63611.0,56697.0,persistence
+1,2025-09-01,2025-06-01,3,63611.0,57175.0,persistence
+1,2025-10-01,2025-06-01,4,63611.0,50974.0,persistence
+1,2025-11-01,2025-06-01,5,63611.0,49709.0,persistence
+1,2025-12-01,2025-06-01,6,63611.0,58895.0,persistence
+1,2026-01-01,2025-06-01,7,63611.0,68046.0,persistence
+1,2026-02-01,2025-06-01,8,63611.0,67907.0,persistence
+1,2026-03-01,2025-06-01,9,63611.0,59053.0,persistence
+1,2026-04-01,2025-06-01,10,63611.0,56752.0,persistence
+1,2026-05-01,2025-06-01,11,63611.0,57919.0,persistence
+1,2026-06-01,2025-06-01,12,63611.0,56678.0,persistence
+2,2025-07-01,2025-06-01,1,48062.0,45493.0,persistence
+2,2025-08-01,2025-06-01,2,48062.0,45058.0,persistence
+2,2025-09-01,2025-06-01,3,48062.0,46764.0,persistence
+2,2025-10-01,2025-06-01,4,48062.0,43343.0,persistence
+2,2025-11-01,2025-06-01,5,48062.0,47143.0,persistence
+2,2025-12-01,2025-06-01,6,48062.0,52702.0,persistence
+2,2026-01-01,2025-06-01,7,48062.0,59122.0,persistence
+2,2026-02-01,2025-06-01,8,48062.0,60159.0,persistence
+2,2026-03-01,2025-06-01,9,48062.0,57781.0,persistence
+2,2026-04-01,2025-06-01,10,48062.0,47084.0,persistence
+2,2026-05-01,2025-06-01,11,48062.0,45724.0,persistence
+2,2026-06-01,2025-06-01,12,48062.0,48362.0,persistence
+3,2025-07-01,2025-06-01,1,83887.0,86693.0,persistence
+3,2025-08-01,2025-06-01,2,83887.0,82959.0,persistence
+3,2025-09-01,2025-06-01,3,83887.0,81627.0,persistence
+3,2025-10-01,2025-06-01,4,83887.0,78839.0,persistence
+3,2025-11-01,2025-06-01,5,83887.0,86878.0,persistence
+3,2025-12-01,2025-06-01,6,83887.0,93187.0,persistence
+3,2026-01-01,2025-06-01,7,83887.0,94303.0,persistence
+3,2026-02-01,2025-06-01,8,83887.0,87033.0,persistence
+3,2026-03-01,2025-06-01,9,83887.0,88022.0,persistence
+3,2026-04-01,2025-06-01,10,83887.0,81418.0,persistence
+3,2026-05-01,2025-06-01,11,83887.0,82467.0,persistence
+3,2026-06-01,2025-06-01,12,83887.0,78218.0,persistence
+4,2025-07-01,2025-06-01,1,7142.0,6981.0,persistence
+4,2025-08-01,2025-06-01,2,7142.0,6644.0,persistence
+4,2025-09-01,2025-06-01,3,7142.0,7195.0,persistence
+4,2025-10-01,2025-06-01,4,7142.0,7282.0,persistence
+4,2025-11-01,2025-06-01,5,7142.0,8187.0,persistence
+4,2025-12-01,2025-06-01,6,7142.0,8431.0,persistence
+4,2026-01-01,2025-06-01,7,7142.0,8479.0,persistence
+4,2026-02-01,2025-06-01,8,7142.0,9604.0,persistence
+4,2026-03-01,2025-06-01,9,7142.0,9245.0,persistence
+4,2026-04-01,2025-06-01,10,7142.0,7437.0,persistence
+4,2026-05-01,2025-06-01,11,7142.0,7067.0,persistence
+4,2026-06-01,2025-06-01,12,7142.0,7075.0,persistence
+5,2025-07-01,2025-06-01,1,30378.0,32090.0,persistence
+5,2025-08-01,2025-06-01,2,30378.0,31585.0,persistence
+5,2025-09-01,2025-06-01,3,30378.0,30332.0,persistence
+5,2025-10-01,2025-06-01,4,30378.0,29010.0,persistence
+5,2025-11-01,2025-06-01,5,30378.0,27501.0,persistence
+5,2025-12-01,2025-06-01,6,30378.0,30639.0,persistence
+5,2026-01-01,2025-06-01,7,30378.0,31085.0,persistence
+5,2026-02-01,2025-06-01,8,30378.0,29220.0,persistence
+5,2026-03-01,2025-06-01,9,30378.0,28894.0,persistence
+5,2026-04-01,2025-06-01,10,30378.0,29008.0,persistence
+5,2026-05-01,2025-06-01,11,30378.0,27212.0,persistence
+5,2026-06-01,2025-06-01,12,30378.0,29108.0,persistence
+1,2025-07-01,2025-06-01,1,61813.52964175523,58368.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-08-01,2025-06-01,2,60304.24290717819,56697.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-09-01,2025-06-01,3,60347.59073848835,57175.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-10-01,2025-06-01,4,55288.72513338727,50974.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-11-01,2025-06-01,5,54901.77291291907,49709.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2025-12-01,2025-06-01,6,58902.32187870764,58895.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2026-01-01,2025-06-01,7,62339.34075430941,68046.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2026-02-01,2025-06-01,8,60694.01116038102,67907.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2026-03-01,2025-06-01,9,53324.08567733384,59053.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2026-04-01,2025-06-01,10,52250.182545726144,56752.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2026-05-01,2025-06-01,11,53627.73022791026,57919.0,seasonal_residual_change + neural_network_change + random_forest_change
+1,2026-06-01,2025-06-01,12,55449.183425028416,56678.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-07-01,2025-06-01,1,47109.623998781964,45493.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-08-01,2025-06-01,2,46341.331288219975,45058.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-09-01,2025-06-01,3,46151.45536780618,46764.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-10-01,2025-06-01,4,45434.09033032239,43343.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-11-01,2025-06-01,5,47804.47682031194,47143.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2025-12-01,2025-06-01,6,50846.2916172816,52702.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2026-01-01,2025-06-01,7,54774.87615839875,59122.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2026-02-01,2025-06-01,8,55322.278108636936,60159.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2026-03-01,2025-06-01,9,51851.87831106697,57781.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2026-04-01,2025-06-01,10,49903.00296332564,47084.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2026-05-01,2025-06-01,11,46753.92801027168,45724.0,seasonal_residual_change + neural_network_change + random_forest_change
+2,2026-06-01,2025-06-01,12,46276.29319897122,48362.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-07-01,2025-06-01,1,84222.37246271735,86693.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-08-01,2025-06-01,2,83260.22276747794,82959.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-09-01,2025-06-01,3,83365.81251825449,81627.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-10-01,2025-06-01,4,83394.12180738107,78839.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-11-01,2025-06-01,5,84895.71570792182,86878.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2025-12-01,2025-06-01,6,86975.61446312485,93187.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2026-01-01,2025-06-01,7,89494.24293398544,94303.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2026-02-01,2025-06-01,8,87309.30400436663,87033.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2026-03-01,2025-06-01,9,85494.0449936005,88022.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2026-04-01,2025-06-01,10,86627.36431396627,81418.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2026-05-01,2025-06-01,11,85411.84086316077,82467.0,seasonal_residual_change + neural_network_change + random_forest_change
+3,2026-06-01,2025-06-01,12,84673.76656446005,78218.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-07-01,2025-06-01,1,6917.1698156746115,6981.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-08-01,2025-06-01,2,6847.644135056573,6644.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-09-01,2025-06-01,3,6823.039471732208,7195.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-10-01,2025-06-01,4,6769.774988569094,7282.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-11-01,2025-06-01,5,7135.248516495175,8187.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2025-12-01,2025-06-01,6,7415.6583311269305,8431.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2026-01-01,2025-06-01,7,7670.594883686459,8479.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2026-02-01,2025-06-01,8,7564.022460723382,9604.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2026-03-01,2025-06-01,9,7329.310842469756,9245.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2026-04-01,2025-06-01,10,7066.785490388378,7437.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2026-05-01,2025-06-01,11,6859.936168791704,7067.0,seasonal_residual_change + neural_network_change + random_forest_change
+4,2026-06-01,2025-06-01,12,6748.003569830045,7075.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-07-01,2025-06-01,1,30085.83410559906,32090.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-08-01,2025-06-01,2,29238.2856479427,31585.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-09-01,2025-06-01,3,28191.125562458816,30332.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-10-01,2025-06-01,4,28080.84208883865,29010.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-11-01,2025-06-01,5,29395.063400789855,27501.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2025-12-01,2025-06-01,6,30671.188563640164,30639.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2026-01-01,2025-06-01,7,31753.67765133197,31085.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2026-02-01,2025-06-01,8,30377.629077262507,29220.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2026-03-01,2025-06-01,9,29638.65362428788,28894.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2026-04-01,2025-06-01,10,29180.37237444142,29008.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2026-05-01,2025-06-01,11,29087.034879935756,27212.0,seasonal_residual_change + neural_network_change + random_forest_change
+5,2026-06-01,2025-06-01,12,28950.600576102643,29108.0,seasonal_residual_change + neural_network_change + random_forest_change

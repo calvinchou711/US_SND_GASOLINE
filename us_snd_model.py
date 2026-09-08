@@ -11,7 +11,7 @@ import sklearn
 import xgboost
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.base import BaseEstimator, RegressorMixin
-from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.linear_model import LinearRegression, Ridge, HuberRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.pipeline import make_pipeline
@@ -22,17 +22,61 @@ from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 from xgboost import XGBRegressor
 from gasoline_data import HERE, PADD_NAMES, FLOWS, SIGNS, load_panel, refresh_data
 
-BASELINES = ['persistence', 'seasonal_naive', 'forecast_flow_identity']
+BASELINES = ['persistence', 'seasonal_naive', 'seasonal_change', 'forecast_flow_identity']
 LEARNED = ['constrained_level', 'ridge_change', 'seasonal_ridge_change',
            'polynomial_ridge_change', 'spline_ridge_change', 'random_forest_change',
            'xgboost_change', 'neural_network_change']
+LEARNED += ['seasonal_residual_change', 'huber_change']
 MODELS = BASELINES + LEARNED
 BASE_FEATURES = ['stock_lag1', 'stock_lag12', 'change_lag1'] + ['lag_' + c for c in FLOWS]
 FEATURES = BASE_FEATURES + ['sin_month', 'cos_month']
 
 
+COVID_START = pd.Timestamp('2020-03-01')
+COVID_END = pd.Timestamp('2021-03-01')
+
+
+def outside_covid(months):
+    dates = pd.DatetimeIndex(months)
+    return ~((dates >= COVID_START) & (dates <= COVID_END))
+
+
+def training_rows(frame):
+    """Exclude COVID targets and any training row whose direct inputs touch COVID."""
+    dates = pd.DatetimeIndex(frame.month)
+    keep = outside_covid(dates)
+    # lag1 stocks/flows, lag2 for the latest change, lag12 for annual stocks.
+    for lag in [1, 2, 12]:
+        keep &= outside_covid(dates - pd.DateOffset(months=lag))
+    return frame.loc[keep]
+
+
+def validation_splits(frame, folds=10, test_size=None):
+    """Split eligible target dates, retaining real calendar positions and lag dates."""
+    allowed = np.flatnonzero(outside_covid(frame.month))
+    splitter = TimeSeriesSplit(n_splits=folds, test_size=test_size)
+    return [(allowed[tr], allowed[te]) for tr, te in splitter.split(allowed)]
+
+
+def recursive_origins(development_end, count=6):
+    """Use six full test years that do not overlap the excluded interval."""
+    origins = []
+    cutoff = development_end - pd.DateOffset(years=1)
+    while len(origins) < count:
+        months = pd.date_range(cutoff + pd.offsets.MonthBegin(), periods=12, freq='MS')
+        if outside_covid(months).all() and outside_covid([cutoff]).all():
+            origins.append(cutoff)
+        cutoff -= pd.DateOffset(years=1)
+    return sorted(origins)
+
+
 def parameter_grid(name):
     """Conventional compact grids for each tunable model family."""
+    if name == 'seasonal_residual_change':
+        return {'ridge__alpha': [0.1, 1, 10, 100, 1000]}
+    if name == 'huber_change':
+        return {'regressor__huberregressor__epsilon': [1.35, 1.75],
+                'regressor__huberregressor__alpha': [0.01, 1, 10]}
     if name in ['ridge_change', 'seasonal_ridge_change']:
         return {'ridge__alpha': [0.01, 0.1, 1, 10, 100, 1000]}
     if name == 'polynomial_ridge_change':
@@ -60,7 +104,10 @@ class StockRegressor(RegressorMixin, BaseEstimator):
 
     def fit(self, X, y):
         from sklearn.base import clone
+        X = training_rows(X)
         target = X.actual_kb if self.name == 'constrained_level' else X.delta_kb
+        if self.name == 'seasonal_residual_change':
+            target = target - X.seasonal_change
         self.model_ = clone(self.model).fit(X[columns(self.name)], target)
         return self
 
@@ -73,7 +120,7 @@ def tune(name, train, folds=10, jobs=8, splits=None):
     grid = parameter_grid(name)
     if not grid:
         return {}, pd.DataFrame(), ''
-    cv = splits if splits is not None else TimeSeriesSplit(n_splits=folds)
+    cv = splits if splits is not None else validation_splits(train, folds)
     search = GridSearchCV(StockRegressor(name, estimator(name)),
         {'model__' + key: value for key, value in grid.items()},
         scoring='neg_mean_absolute_error', cv=cv, n_jobs=jobs,
@@ -100,7 +147,7 @@ def seasonal_design(months, origin):
 
 def forecast_flows(history, months):
     """Fit monthly daily-rate seasonality + trend on the last 60 observed months."""
-    train = history.tail(60)
+    train = history.loc[outside_covid(history.month)].tail(60)
     model = LinearRegression()
     model.fit(seasonal_design(train.month, train.month.iloc[0]),
               train[FLOWS].to_numpy() / train.month.dt.days_in_month.to_numpy()[:, None])
@@ -117,6 +164,14 @@ def feature_row(history, month):
     row = {'stock_lag1': last.stock_kb, 'stock_lag12': history.iloc[-12].stock_kb,
            'change_lag1': last.stock_kb - history.iloc[-2].stock_kb,
            'sin_month': np.sin(2*np.pi*month.month/12), 'cos_month': np.cos(2*np.pi*month.month/12)}
+    changes = history.set_index('month').stock_kb.diff()
+    clean = outside_covid(changes.index) & outside_covid(changes.index - pd.DateOffset(months=1))
+    changes = changes.loc[clean].tail(60)
+    seasonal = changes[changes.index.month == month.month].dropna()
+    row['seasonal_change'] = float(seasonal.mean()) if len(seasonal) else 0.0
+    normal_history = history.iloc[:-1].loc[lambda f: outside_covid(f.month)].tail(60)
+    normal = normal_history[normal_history.month.dt.month.eq(last.month.month)].stock_kb
+    row['stock_seasonal_gap'] = float(last.stock_kb - normal.mean()) if len(normal) else 0.0
     row.update({'lag_' + c: last[c] * sign for c, sign in zip(FLOWS, SIGNS)})
     return row
 
@@ -135,6 +190,8 @@ def supervised(history):
 
 
 def columns(name):
+    if name == 'seasonal_residual_change':
+        return FEATURES + ['stock_seasonal_gap', 'seasonal_change']
     if name == 'constrained_level':
         return ['stock_lag1'] + ['lag_' + c for c in FLOWS]
     if name == 'ridge_change':
@@ -143,6 +200,11 @@ def columns(name):
 
 
 def estimator(name):
+    if name == 'seasonal_residual_change':
+        return make_pipeline(StandardScaler(), Ridge(alpha=100))
+    if name == 'huber_change':
+        return TransformedTargetRegressor(regressor=make_pipeline(StandardScaler(),
+            HuberRegressor(max_iter=1000)), transformer=StandardScaler())
     if name == 'constrained_level':
         return LinearRegression(positive=True)
     if name in ['ridge_change', 'seasonal_ridge_change']:
@@ -170,13 +232,17 @@ def estimator(name):
 def fit(name, train, params=None):
     if name in BASELINES:
         return None, ''
+    train = training_rows(train)
     model = estimator(name)
     if params:
         model.set_params(**params)
     target = 'actual_kb' if name == 'constrained_level' else 'delta_kb'
-    with warnings.catch_warnings(record=True) as caught:
+    # Match the search's numerical settings, including neural-network refits.
+    from threadpoolctl import threadpool_limits
+    with warnings.catch_warnings(record=True) as caught, threadpool_limits(limits=1):
         warnings.simplefilter('always', ConvergenceWarning)
-        model.fit(train[columns(name)], train[target])
+        values = train[target] - train.seasonal_change if name == 'seasonal_residual_change' else train[target]
+        model.fit(train[columns(name)], values)
     return model, '; '.join(str(w.message) for w in caught)
 
 
@@ -185,9 +251,13 @@ def predict(name, model, frame):
         return frame.stock_lag1.to_numpy()
     if name == 'seasonal_naive':
         return frame.stock_lag12.to_numpy()
+    if name == 'seasonal_change':
+        return np.maximum(0, frame.stock_lag1.to_numpy() + frame.seasonal_change.to_numpy())
     if name == 'forecast_flow_identity':
         return frame.forecast_flow_identity.to_numpy()
     prediction = model.predict(frame[columns(name)])
+    if name == 'seasonal_residual_change':
+        prediction += frame.seasonal_change.to_numpy()
     if name != 'constrained_level':
         prediction += frame.stock_lag1.to_numpy()
     return np.maximum(prediction, 0)
@@ -207,7 +277,7 @@ def evaluate(samples, folds=10, holdout=24, jobs=8):
         development = frame.iloc[:-holdout]
         if len(development) - folds*12 < 36:
             raise ValueError('Need >=36 initial training months plus 10 annual folds and holdout')
-        splits = list(TimeSeriesSplit(n_splits=folds, test_size=12).split(development))
+        splits = validation_splits(development, folds, test_size=12)
         for name in MODELS:
             params, results, warning = tune(name, development, folds, jobs, splits)
             best_parameters[padd, name] = params
@@ -218,7 +288,7 @@ def evaluate(samples, folds=10, holdout=24, jobs=8):
             if warning:
                 warning_rows.append(dict(padd=padd, model=name, stage='grid_search', warning=warning))
             for fold, (tr, te) in enumerate(splits, 1):
-                train, test = development.iloc[tr], development.iloc[te]
+                train, test = training_rows(development.iloc[tr]), development.iloc[te]
                 model, warning = fit(name, train, params)
                 pred = predict(name, model, test)
                 fold_metrics.append(dict(padd=padd, model=name, fold=fold,
@@ -301,6 +371,36 @@ def metric_table(predictions, keys):
         **score(g.actual_kb, g.predicted_kb)} for k,g in predictions.groupby(keys)])
 
 
+def select_horizon(samples, panel, folds=10, jobs=8):
+    """Select a year-ahead model using full forecast paths on earlier non-COVID years."""
+    predictions, searches, warning_rows = [], [], []
+    development_end = samples[1].month.iloc[-25]
+    for cutoff in recursive_origins(development_end):
+        for name in MODELS:
+            states = {}
+            for p in PADD_NAMES:
+                train = samples[p][samples[p].month.le(cutoff)]
+                params, results, warning = tune(name, train, folds, jobs)
+                if not results.empty:
+                    searches.append(results.assign(padd=p, model=name,
+                        stage='recursive_development', train_end=cutoff))
+                if warning:
+                    warning_rows.append(dict(padd=p, model=name, stage='recursive_grid_search', warning=warning))
+                model, warning = fit(name, train, params)
+                if warning:
+                    warning_rows.append(dict(padd=p, model=name, stage='recursive_cv', warning=warning))
+                states[p] = {'name':name, 'estimator':model}
+            path, _ = forecast(panel[panel.month.le(cutoff)], states)
+            path = path[['padd','month','origin_month','horizon','stock_kb']].rename(columns={'stock_kb':'predicted_kb'})
+            path = path.merge(panel[['padd','month','stock_kb']], on=['padd','month'], validate='one_to_one').rename(columns={'stock_kb':'actual_kb'})
+            predictions.append(path.assign(model=name))
+        print(f'Recursive development origin {cutoff.date()} complete', flush=True)
+    predictions = pd.concat(predictions, ignore_index=True)
+    national = aggregate(predictions, ['month','origin_month','horizon','model'], ['actual_kb','predicted_kb'])
+    scores = metric_table(national, ['model']).sort_values(['mae_kb','model'])
+    return scores.iloc[0].model, predictions, national, scores, pd.concat(searches, ignore_index=True), pd.DataFrame(warning_rows)
+
+
 def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10, jobs=8):
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
@@ -311,17 +411,30 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10, 
     selected = predictions.merge(selection[['padd','selected_model']], on='padd')
     selected = selected[selected.model.eq(selected.selected_model)].copy()
     selected['model'] = 'selected_padd_models'
+    one_month_models = selection.sort_values('padd').set_index('padd').selected_model.to_dict()
+    one_month_model_label = ' + '.join(dict.fromkeys(one_month_models.values()))
     combined = pd.concat([predictions, selected[predictions.columns]], ignore_index=True)
     us_predictions = aggregate(combined, ['month','origin_month','model','split','fold'], ['actual_kb','predicted_kb'])
     padd_metrics = metric_table(combined, ['padd','model','split'])
     us_metrics = metric_table(us_predictions, ['model','split'])
-    regional, national = forecast(panel, fitted)
+    one_step_regional, one_step_national = forecast(panel, fitted, horizon=1)
+    year_ahead_model, recursive_cv, us_recursive_cv, horizon_scores, horizon_grids, horizon_warnings = select_horizon(samples, panel, folds, jobs)
+    grid_results = pd.concat([grid_results, horizon_grids], ignore_index=True)
+    fit_warnings = pd.concat([fit_warnings, horizon_warnings], ignore_index=True)
+    horizon_fitted = {}
+    for p, frame in samples.items():
+        model, warning = fit(year_ahead_model, frame, best_parameters[p, year_ahead_model])
+        horizon_fitted[p] = {'name':year_ahead_model, 'estimator':model}
+        if warning:
+            fit_warnings.loc[len(fit_warnings)] = [p, year_ahead_model, 'horizon_final', warning]
+    regional, national = forecast(panel, horizon_fitted)
     # Two disjoint 12-month paths in the final holdout: same recursive procedure as outlook.
     recursive = []
+    recursive_benchmarks = []
     for offset in [24, 12]:
         states = {}
         cutoff = panel.month.max() - pd.DateOffset(months=offset)
-        for p, state in fitted.items():
+        for p, state in horizon_fitted.items():
             train = samples[p][samples[p].month.le(cutoff)]
             model, warning = fit(state['name'], train, best_parameters[p, state['name']])
             states[p] = {'name': state['name'], 'estimator': model}
@@ -331,31 +444,48 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10, 
         path = path.merge(panel[['padd','month','stock_kb']], on=['padd','month'], suffixes=('_forecast','_actual'), validate='one_to_one')
         path = path.rename(columns={'stock_kb_forecast':'predicted_kb','stock_kb_actual':'actual_kb'})
         recursive.append(path)
+        for label in ['persistence', one_month_model_label]:
+            baseline_states = {}
+            for p in PADD_NAMES:
+                name = 'persistence' if label == 'persistence' else one_month_models[p]
+                model, warning = fit(name, samples[p][samples[p].month.le(cutoff)], best_parameters[p, name])
+                baseline_states[p] = {'name':name, 'estimator':model}
+            baseline, _ = forecast(panel[panel.month.le(cutoff)], baseline_states)
+            baseline = baseline[['padd','month','origin_month','horizon','stock_kb']].rename(columns={'stock_kb':'predicted_kb'})
+            baseline = baseline.merge(panel[['padd','month','stock_kb']], on=['padd','month'], validate='one_to_one').rename(columns={'stock_kb':'actual_kb'})
+            recursive_benchmarks.append(baseline.assign(model=label))
     recursive = pd.concat(recursive, ignore_index=True)
     us_recursive = aggregate(recursive, ['month','origin_month','horizon'], ['actual_kb','predicted_kb'])
     us_history = aggregate(panel, ['month'], FLOWS+['stock_kb','total_gasoline_stock_kb','finished_stock_kb','blending_stock_kb',
         'finished_production_kb','blending_net_inputs_kb','stock_component_residual_kb','balance_kb','accounting_residual_kb'])
-    jodi_raw = pd.read_csv(Path(data_dir)/'jodi_us_raw.csv')
-    jodi_raw['month'] = pd.to_datetime(jodi_raw.time_period).dt.to_period('M').dt.to_timestamp()
-    if (jodi_raw.groupby(['month','flow_breakdown']).obs_value.nunique() > 1).any():
-        raise ValueError('Conflicting JODI revisions; resolve before benchmarking')
-    jodi = jodi_raw.drop_duplicates(['month','flow_breakdown']).pivot(index='month',columns='flow_breakdown',values='obs_value').add_prefix('jodi_').reset_index()
-    us_history = us_history.merge(jodi, on='month', how='left', validate='one_to_one')
-    latest_us = national[national.horizon.eq(1)].assign(padd=0, padd_name='United States (sum of PADDs)',
-                                                       model='selected_padd_models')
-    latest = pd.concat([regional[regional.horizon.eq(1)], latest_us], ignore_index=True)
-    tables = {'padd_monthly_model':panel,'us_monthly_model':us_history,'jodi_us_benchmark':jodi,
+    latest_us = one_step_national.assign(padd=0, padd_name='United States (sum of PADDs)',
+                                                       model=one_month_model_label)
+    latest = pd.concat([one_step_regional, latest_us], ignore_index=True)
+    tables = {'padd_monthly_model':panel,'us_monthly_model':us_history,
         'padd_predictions':combined,'us_predictions':us_predictions,'padd_model_metrics':padd_metrics,
         'us_model_metrics':us_metrics,'fold_metrics':fold_metrics,'selected_models':selection,
         'padd_forecast_12m':regional,'us_forecast_12m':national,'latest_forecast':latest,
+        'recursive_cv_predictions':recursive_cv, 'us_recursive_cv_predictions':us_recursive_cv,
+        'year_ahead_model_cv_metrics':horizon_scores,
+        'recursive_benchmark_predictions':pd.concat(recursive_benchmarks, ignore_index=True),
         'recursive_holdout_predictions':recursive,'us_recursive_holdout_predictions':us_recursive,
         'recursive_holdout_metrics':metric_table(recursive,['padd']),
         'us_recursive_horizon_metrics':metric_table(us_recursive,['horizon']), 'fit_warnings':fit_warnings,
         'grid_search_results':grid_results,
         'best_parameters':pd.DataFrame([{'padd':p, 'model':name, 'params':json.dumps(params, sort_keys=True)}
             for (p,name),params in best_parameters.items()])}
+    tables['training_sample_audit'] = pd.concat([frame[['month','origin_month']].assign(
+        padd=p, training_eligible=frame.index.isin(training_rows(frame).index),
+        evaluation_eligible=outside_covid(frame.month)) for p, frame in samples.items()], ignore_index=True)
     for name, frame in tables.items():
         frame.to_csv(output/f'{name}.csv', index=False)
+    all_fitted = {}
+    for p, frame in samples.items():
+        for name in MODELS:
+            model, warning = fit(name, frame, best_parameters[p, name])
+            all_fitted[p, name] = {'name': name, 'estimator': model}
+    joblib.dump(all_fitted, output/'all_fitted_models.joblib')
+    joblib.dump(horizon_fitted, output/'fitted_horizon_models.joblib')
     joblib.dump(fitted, output/'fitted_models.joblib')
     coefficients = []
     for p, frame in samples.items():
@@ -363,26 +493,32 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10, 
         coefficients.append({'padd':p,'intercept_kb':model.intercept_,**dict(zip(columns('constrained_level'),model.coef_))})
     pd.DataFrame(coefficients).to_csv(output/'constrained_model_coefficients.csv',index=False)
     metadata = {'product':'Total motor gasoline: finished motor gasoline plus motor gasoline blending components',
+        'covid_exclusion': {'start':'2020-03-01', 'end':'2021-03-01', 'inclusive':True,
+            'method':'Exclude targets and direct lag inputs touching COVID from stock fitting; exclude COVID observations from flow fits and seasonal averages; preserve the full calendar and historical balance.',
+            'evaluation':'Exclude COVID target months from development selection; full recursive development years avoid COVID; final 24 months unchanged.'},
         'stock_units':'thousand barrels at month end', 'flow_units':'thousand barrels per calendar month',
         'equation':'S[t] = S[t-1] + (finished refinery/blender net production[t] - blending-component refinery/blender net inputs[t]) + imports[t] + net receipts[t] + adjustments[t] + biofuel net production[t] - product supplied[t] - exports[t] + residual[t]',
         'data_start':str(panel.month.min().date()),'data_end':str(panel.month.max().date()),
-        'cv':f'{folds} expanding folds, 12 test months each; final 24 months excluded from selection',
+        'cv':f'{folds} expanding folds, 12 eligible test months each; final 24 months excluded from selection',
         'holdout_start':str(samples[1].month.iloc[-24].date()),
         'forecast_timing':'One month after latest observed EIA month; conditional on prior monthly data being available. Current revised history, not a real-time release-vintage backtest.',
+        'one_month_models':one_month_models,
+        'one_month_model_label':one_month_model_label,
+        'year_ahead_model':year_ahead_model,
+        'horizon_selection':'Lowest national error across six full non-COVID development years; retune using only past observations at each origin',
         'selection':'GridSearchCV per PADD/model on development data; lowest pooled development CV MAE per PADD including baselines; no holdout tuning',
         'hyperparameter_search':{'method':'GridSearchCV', 'folds':folds,
-            'scoring':'neg_mean_absolute_error', 'splitter':'TimeSeriesSplit with 12-month test blocks',
+            'scoring':'neg_mean_absolute_error', 'splitter':'TimeSeriesSplit on non-COVID target dates; 12 eligible observations per development block',
             'evaluation':'Development scores reuse tuning folds and are selection scores, not nested CV estimates. Final 24 months excluded from every search.',
             'recursive':'Holdout and final refits freeze parameters selected before the holdout.'},
-        'flow_forecast':'Last 60 months, daily rates, linear trend and month fixed effects; net production remains signed',
+        'flow_forecast':'Last 60 non-COVID observations, daily rates, linear trend and month fixed effects; net production remains signed',
         'components':'Flows sum finished and blending components; production is finished net production minus blending net inputs; stocks use independently published MGTSTP series',
         'forecast_stock_floor':0, 'uncertainty':'Point forecasts only; no calibrated prediction intervals',
         'recursive_validation':'Two disjoint 12-month holdout paths; refit at each origin; only two errors per horizon',
         'versions':{'python':platform.python_version(),'numpy':np.__version__,'pandas':pd.__version__,
                     'sklearn':sklearn.__version__, 'xgboost':xgboost.__version__},
         'sources':['https://www.eia.gov/dnav/pet/pet_sum_snd_d_r10_mbbl_m_cur.htm',
-                   'https://www.eia.gov/dnav/pet/TblDefs/pet_sum_snd_tbldef2.asp',
-                   'https://www.jodidata.org/oil/']}
+                   'https://www.eia.gov/dnav/pet/TblDefs/pet_sum_snd_tbldef2.asp']}
     (output/'model_metadata.json').write_text(json.dumps(metadata,indent=2))
     settings = {name: {'features': columns(name), 'estimator': repr(estimator(name)),
                        'param_grid':parameter_grid(name)}

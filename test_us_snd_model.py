@@ -96,3 +96,30 @@ def test_constituent_flows_and_internal_conversion(panel):
     for p in [3,4]:
         assert panel[panel.padd.eq(p)].blending_biofuels_kb.eq(0).all()
         assert panel[panel.padd.eq(p)].blending_biofuels_kb_assumed_zero.all()
+
+
+def test_saved_selected_holdout_matches_refit(panel):
+    """Detect stale saved forecasts or a mismatch between reporting and model code."""
+    import json
+    from us_snd_model import HERE
+    output = HERE/'model_output'
+    selected = pd.read_csv(output/'selected_models.csv')
+    params = pd.read_csv(output/'best_parameters.csv').set_index(['padd','model'])
+    saved = pd.read_csv(output/'padd_predictions.csv', parse_dates=['month'])
+    selected_key = 'selected_padd_models'
+    for row in selected.itertuples():
+        history = panel[panel.padd.eq(row.padd)].reset_index(drop=True)
+        samples = supervised(history)
+        estimator, _ = fit(row.selected_model, samples.iloc[:-24], json.loads(params.loc[(row.padd,row.selected_model),'params']))
+        expected = predict(row.selected_model, estimator, samples.iloc[-24:])
+        observed = saved[(saved.padd.eq(row.padd)) & saved.model.eq(selected_key) & saved.split.eq('holdout')].sort_values('month')
+        np.testing.assert_allclose(expected, observed.predicted_kb, rtol=1e-7, atol=1e-5)
+
+
+def test_balance_difference_is_decomposed_against_reported_change(panel):
+    np.testing.assert_allclose(panel.accounting_residual_kb,
+        panel.reported_change_residual_kb + panel.flow_reporting_residual_kb, equal_nan=True)
+    assert panel.flow_reporting_residual_kb.abs().max() <= 2
+    january = panel[panel.month.eq(pd.Timestamp('2026-01-01'))].set_index('padd')
+    assert january.loc[[1,3,5], 'flow_reporting_residual_kb'].eq(0).all()
+    assert january.loc[[1,3,5], 'reported_change_residual_kb'].tolist() == [66,-43,-81]

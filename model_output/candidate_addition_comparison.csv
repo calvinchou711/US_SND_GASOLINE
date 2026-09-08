@@ -1,0 +1,5 @@
+candidate_set,period,mae_kb
+"Original candidates, COVID excluded",cv,4276.588147344407
+"Original candidates, COVID excluded",holdout,4105.541813621244
+"Expanded candidates, COVID excluded",cv,3938.8229142133414
+"Expanded candidates, COVID excluded",holdout,4207.5033402341

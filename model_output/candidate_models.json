@@ -230,5 +230,61 @@
         10
       ]
     }
+  },
+  "seasonal_residual_change": {
+    "features": [
+      "stock_lag1",
+      "stock_lag12",
+      "change_lag1",
+      "lag_production_kb",
+      "lag_demand_kb",
+      "lag_imports_kb",
+      "lag_exports_kb",
+      "lag_net_receipts_kb",
+      "lag_adjustments_kb",
+      "lag_biofuels_kb",
+      "sin_month",
+      "cos_month",
+      "stock_seasonal_gap",
+      "seasonal_change"
+    ],
+    "estimator": "Pipeline(steps=[('standardscaler', StandardScaler()),\n                ('ridge', Ridge(alpha=100))])",
+    "param_grid": {
+      "ridge__alpha": [
+        0.1,
+        1,
+        10,
+        100,
+        1000
+      ]
+    }
+  },
+  "huber_change": {
+    "features": [
+      "stock_lag1",
+      "stock_lag12",
+      "change_lag1",
+      "lag_production_kb",
+      "lag_demand_kb",
+      "lag_imports_kb",
+      "lag_exports_kb",
+      "lag_net_receipts_kb",
+      "lag_adjustments_kb",
+      "lag_biofuels_kb",
+      "sin_month",
+      "cos_month"
+    ],
+    "estimator": "TransformedTargetRegressor(regressor=Pipeline(steps=[('standardscaler',\n                                                      StandardScaler()),\n                                                     ('huberregressor',\n                                                      HuberRegressor(max_iter=1000))]),\n                           transformer=StandardScaler())",
+    "param_grid": {
+      "regressor__huberregressor__epsilon": [
+        1.35,
+        1.75
+      ],
+      "regressor__huberregressor__alpha": [
+        0.01,
+        1,
+        10
+      ]
+    }
   }
 }

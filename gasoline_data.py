@@ -1,16 +1,14 @@
-"""Reproducible EIA downloads and a local JODI snapshot; no database writes."""
+"""EIA monthly supply, disposition, and inventory data."""
 from pathlib import Path
 from datetime import datetime, timezone
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import io
 import json
-import duckdb
 import pandas as pd
 import requests
 
 HERE = Path(__file__).resolve().parent
-DATABASE = HERE.parents[1] / 'data/commodities.duckdb'
 PADD_NAMES = {1: 'East Coast', 2: 'Midwest', 3: 'Gulf Coast', 4: 'Rocky Mountain', 5: 'West Coast'}
 # Total motor gasoline = finished motor gasoline + motor gasoline blending components.
 # Preserve each constituent series; derive total net production by subtracting
@@ -35,7 +33,7 @@ SPARSE = {prefix + c for prefix in ['finished_', 'blending_']
           for c in ['imports_kb', 'exports_kb', 'biofuels_kb', 'net_receipts_kb']}
 
 
-def refresh_data(data_dir=HERE / 'data', database=DATABASE):
+def refresh_data(data_dir=HERE / 'data'):
     data_dir = Path(data_dir)
     raw_dir = data_dir / 'raw'
     raw_dir.mkdir(parents=True, exist_ok=True)
@@ -48,7 +46,7 @@ def refresh_data(data_dir=HERE / 'data', database=DATABASE):
             response = requests.get(url, timeout=60)
             response.raise_for_status()
             if 'Motor Gasoline Blend. Comp.' not in response.text or code in response.text:
-                raise ValueError(f'Review structural-zero policy for {code}')
+                raise ValueError(f'Review structural-zero model for {code}')
             filename = f'blending_biofuels_padd{p}_source.html'
             (raw_dir / filename).write_bytes(response.content)
             months = pd.date_range('1981-01-01', pd.Timestamp.now(), freq='MS')
@@ -89,14 +87,6 @@ def refresh_data(data_dir=HERE / 'data', database=DATABASE):
     raw = pd.concat([r[0] for r in results], ignore_index=True)
     raw.to_csv(data_dir / 'eia_observations.csv', index=False)
     (data_dir / 'source_manifest.json').write_text(json.dumps([r[1] for r in results], indent=2))
-    with duckdb.connect(str(database), read_only=True) as con:
-        jodi = con.execute("""SELECT time_period, flow_breakdown, obs_value, assessment_code
-            FROM fundamental.jodi_observation WHERE ref_area='US'
-            AND energy_product='GASOLINE' AND unit_measure='KBBL'""").fetchdf()
-    jodi.to_csv(data_dir / 'jodi_us_raw.csv', index=False)
-    (data_dir / 'jodi_source.json').write_text(json.dumps({'database': str(database),
-        'table': 'fundamental.jodi_observation', 'product': 'GASOLINE', 'unit': 'KBBL',
-        'snapshot_utc': datetime.now(timezone.utc).isoformat()}, indent=2))
     return load_panel(data_dir)
 
 
@@ -144,6 +134,7 @@ def load_panel(data_dir=HERE / 'data', start='2007-01-01'):
     panel['stock_change_kb'] = panel.stock_kb - panel.previous_stock_kb
     panel['accounting_residual_kb'] = panel.stock_change_kb - panel.balance_kb
     panel['reported_change_residual_kb'] = panel.stock_change_kb - panel.reported_stock_change_kb
+    panel['flow_reporting_residual_kb'] = panel.reported_stock_change_kb - panel.balance_kb
     return panel
 
 

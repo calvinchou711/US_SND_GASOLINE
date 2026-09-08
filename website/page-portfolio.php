@@ -21,7 +21,7 @@
 		<div class="portfolio-projects">
 			<a href="<?php echo esc_url( home_url( '/oil-market-monitor/' ) ); ?>">US Oil Dashboard</a>
 			<a href="<?php echo esc_url( home_url( '/portfolio/us-supply-demand-model-crude/' ) ); ?>">US Supply &amp; Demand Model for Crude</a>
-			<a href="<?php echo esc_url( home_url( '/portfolio/us-supply-demand-model-gasoline/' ) ); ?>">US Supply &amp; Demand Model for Total Gasoline</a>
+			<a href="<?php echo esc_url( home_url( '/portfolio/us-supply-demand-model-gasoline/' ) ); ?>">US Supply &amp; Demand Model for Gasoline</a>
 		</div>
 	</main>
 </div>
