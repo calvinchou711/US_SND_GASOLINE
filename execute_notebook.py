@@ -47,6 +47,16 @@ for table in tables.values():
                             client.execute_cell(setup, len(notebook.cells) - 1)
                         finally:
                             notebook.cells.pop()
+                        latest_index = next(j for j,c in enumerate(notebook.cells)
+                            if c.cell_type == 'code' and 'latest_us = one_step_national' in c.source)
+                        latest_cell = notebook.cells[latest_index]
+                        original_source = latest_cell.source
+                        latest_cell.source = ("display(tables['us_monthly_model'].tail(3))\n"
+                            "display(tables['latest_forecast'][['padd','padd_name','month','stock_kb']])")
+                        try:
+                            client.execute_cell(latest_cell, latest_index)
+                        finally:
+                            latest_cell.source = original_source
                     if cell.cell_type == 'code' and not start <= i < end:
                         client.execute_cell(cell, i)
     finally:

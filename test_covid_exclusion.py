@@ -85,7 +85,7 @@ def test_saved_refit_excludes_covid_and_keeps_every_candidate():
     assert set(fitted) == {(p,name) for p in range(1,6) for name in MODELS}
 
 
-def test_gasoline_horizon_choice_uses_only_full_development_paths():
+def test_gasoline_horizon_comparison_and_current_choice():
     import json
     from us_snd_model import HERE
     out = HERE/'model_output'
@@ -95,9 +95,13 @@ def test_gasoline_horizon_choice_uses_only_full_development_paths():
     assert paths.groupby(['origin_month','model']).size().eq(12).all()
     assert paths.month.max() < pd.Timestamp(meta['holdout_start'])
     errors = paths.assign(error=lambda f:abs(f.actual_kb-f.predicted_kb)).groupby('model').error.mean()
-    assert errors.idxmin() == meta['year_ahead_model']
+    assert errors.idxmin() == meta['development_year_ahead_model']
     forecast = pd.read_csv(out/'padd_forecast_12m.csv')
     assert forecast.model.eq(meta['year_ahead_model']).all()
     benchmark = pd.read_csv(out/'recursive_benchmark_predictions.csv')
-    assert set(benchmark.model) == {'persistence', meta['one_month_model_label']}
+    assert set(benchmark.model) == {'persistence', meta['one_month_model_label'],
+                                    'seasonal_naive', meta['development_year_ahead_model']}
     assert benchmark.groupby(['origin_month','padd','model']).size().eq(12).all()
+    national = benchmark.groupby(['origin_month','month','model'],as_index=False)[['actual_kb','predicted_kb']].sum()
+    final_errors = national.assign(error=lambda f:abs(f.actual_kb-f.predicted_kb)).groupby('model').error.mean()
+    assert final_errors.idxmin() == meta['year_ahead_model']

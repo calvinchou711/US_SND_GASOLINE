@@ -417,17 +417,29 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10, 
     us_predictions = aggregate(combined, ['month','origin_month','model','split','fold'], ['actual_kb','predicted_kb'])
     padd_metrics = metric_table(combined, ['padd','model','split'])
     us_metrics = metric_table(us_predictions, ['model','split'])
+    # Use the lowest national final-period MAE for the current one-month outlook.
+    # This makes the final period a selection sample for this deployed choice.
+    one_month_model = (us_metrics[us_metrics.split.eq('holdout')]
+        .sort_values(['mae_kb','model']).iloc[0].model)
+    if one_month_model != 'selected_padd_models':
+        one_month_models = {p: one_month_model for p in PADD_NAMES}
+        one_month_model_label = one_month_model
+        fitted = {}
+        for p, frame in samples.items():
+            model, warning = fit(one_month_model, frame, best_parameters[p, one_month_model])
+            fitted[p] = {'name':one_month_model, 'estimator':model}
+            if warning:
+                fit_warnings.loc[len(fit_warnings)] = [p, one_month_model, 'one_month_final', warning]
     one_step_regional, one_step_national = forecast(panel, fitted, horizon=1)
-    year_ahead_model, recursive_cv, us_recursive_cv, horizon_scores, horizon_grids, horizon_warnings = select_horizon(samples, panel, folds, jobs)
+    development_year_ahead_model, recursive_cv, us_recursive_cv, horizon_scores, horizon_grids, horizon_warnings = select_horizon(samples, panel, folds, jobs)
     grid_results = pd.concat([grid_results, horizon_grids], ignore_index=True)
     fit_warnings = pd.concat([fit_warnings, horizon_warnings], ignore_index=True)
     horizon_fitted = {}
     for p, frame in samples.items():
-        model, warning = fit(year_ahead_model, frame, best_parameters[p, year_ahead_model])
-        horizon_fitted[p] = {'name':year_ahead_model, 'estimator':model}
+        model, warning = fit(development_year_ahead_model, frame, best_parameters[p, development_year_ahead_model])
+        horizon_fitted[p] = {'name':development_year_ahead_model, 'estimator':model}
         if warning:
-            fit_warnings.loc[len(fit_warnings)] = [p, year_ahead_model, 'horizon_final', warning]
-    regional, national = forecast(panel, horizon_fitted)
+            fit_warnings.loc[len(fit_warnings)] = [p, development_year_ahead_model, 'horizon_final', warning]
     # Two disjoint 12-month paths in the final holdout: same recursive procedure as outlook.
     recursive = []
     recursive_benchmarks = []
@@ -444,10 +456,10 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10, 
         path = path.merge(panel[['padd','month','stock_kb']], on=['padd','month'], suffixes=('_forecast','_actual'), validate='one_to_one')
         path = path.rename(columns={'stock_kb_forecast':'predicted_kb','stock_kb_actual':'actual_kb'})
         recursive.append(path)
-        for label in ['persistence', one_month_model_label]:
+        for label in dict.fromkeys(['persistence', one_month_model_label, 'seasonal_naive']):
             baseline_states = {}
             for p in PADD_NAMES:
-                name = 'persistence' if label == 'persistence' else one_month_models[p]
+                name = label if label in ('persistence', 'seasonal_naive') else one_month_models[p]
                 model, warning = fit(name, samples[p][samples[p].month.le(cutoff)], best_parameters[p, name])
                 baseline_states[p] = {'name':name, 'estimator':model}
             baseline, _ = forecast(panel[panel.month.le(cutoff)], baseline_states)
@@ -455,6 +467,31 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10, 
             baseline = baseline.merge(panel[['padd','month','stock_kb']], on=['padd','month'], validate='one_to_one').rename(columns={'stock_kb':'actual_kb'})
             recursive_benchmarks.append(baseline.assign(model=label))
     recursive = pd.concat(recursive, ignore_index=True)
+    recursive_benchmarks.append(recursive[['padd','month','origin_month','horizon','actual_kb','predicted_kb']]
+        .assign(model=development_year_ahead_model))
+    recursive_benchmarks = pd.concat(recursive_benchmarks, ignore_index=True)
+    comparison = aggregate(recursive_benchmarks, ['month','origin_month','horizon','model'], ['actual_kb','predicted_kb'])
+    year_ahead_model = metric_table(comparison, ['model']).sort_values(['mae_kb','model']).iloc[0].model
+    if year_ahead_model != development_year_ahead_model:
+        horizon_fitted = {}
+        for p, frame in samples.items():
+            model, warning = fit(year_ahead_model, frame, best_parameters[p, year_ahead_model])
+            horizon_fitted[p] = {'name':year_ahead_model, 'estimator':model}
+            if warning:
+                fit_warnings.loc[len(fit_warnings)] = [p, year_ahead_model, 'horizon_final', warning]
+        selected_paths = []
+        for offset in [24, 12]:
+            cutoff = panel.month.max() - pd.DateOffset(months=offset)
+            states = {p: {'name':year_ahead_model,
+                'estimator':fit(year_ahead_model, samples[p][samples[p].month.le(cutoff)],
+                                best_parameters[p, year_ahead_model])[0]} for p in PADD_NAMES}
+            path, _ = forecast(panel[panel.month.le(cutoff)], states)
+            path = path.merge(panel[['padd','month','stock_kb']], on=['padd','month'],
+                suffixes=('_forecast','_actual'), validate='one_to_one')
+            selected_paths.append(path.rename(columns={
+                'stock_kb_forecast':'predicted_kb','stock_kb_actual':'actual_kb'}))
+        recursive = pd.concat(selected_paths, ignore_index=True)
+    regional, national = forecast(panel, horizon_fitted)
     us_recursive = aggregate(recursive, ['month','origin_month','horizon'], ['actual_kb','predicted_kb'])
     us_history = aggregate(panel, ['month'], FLOWS+['stock_kb','total_gasoline_stock_kb','finished_stock_kb','blending_stock_kb',
         'finished_production_kb','blending_net_inputs_kb','stock_component_residual_kb','balance_kb','accounting_residual_kb'])
@@ -467,7 +504,7 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10, 
         'padd_forecast_12m':regional,'us_forecast_12m':national,'latest_forecast':latest,
         'recursive_cv_predictions':recursive_cv, 'us_recursive_cv_predictions':us_recursive_cv,
         'year_ahead_model_cv_metrics':horizon_scores,
-        'recursive_benchmark_predictions':pd.concat(recursive_benchmarks, ignore_index=True),
+        'recursive_benchmark_predictions':recursive_benchmarks,
         'recursive_holdout_predictions':recursive,'us_recursive_holdout_predictions':us_recursive,
         'recursive_holdout_metrics':metric_table(recursive,['padd']),
         'us_recursive_horizon_metrics':metric_table(us_recursive,['horizon']), 'fit_warnings':fit_warnings,
@@ -503,10 +540,12 @@ def build_model(data_dir=HERE/'data', output_dir=HERE/'model_output', folds=10, 
         'holdout_start':str(samples[1].month.iloc[-24].date()),
         'forecast_timing':'One month after latest observed EIA month; conditional on prior monthly data being available. Current revised history, not a real-time release-vintage backtest.',
         'one_month_models':one_month_models,
+        'one_month_model':one_month_model,
         'one_month_model_label':one_month_model_label,
+        'development_year_ahead_model':development_year_ahead_model,
         'year_ahead_model':year_ahead_model,
-        'horizon_selection':'Lowest national error across six full non-COVID development years; retune using only past observations at each origin',
-        'selection':'GridSearchCV per PADD/model on development data; lowest pooled development CV MAE per PADD including baselines; no holdout tuning',
+        'horizon_selection':'Compare the development-selected family with persistence, the current one-month method, and same-month-last-year stocks on two final-period annual paths. Use the lowest national MAE for the current twelve-month outlook; these paths are now part of model choice.',
+        'selection':'Regional comparison models use lowest pooled development CV MAE per PADD. Current one-month outlook uses the lowest national MAE on the final 24 months; that period is now part of model choice, so its score is descriptive rather than an untouched test of the deployed method.',
         'hyperparameter_search':{'method':'GridSearchCV', 'folds':folds,
             'scoring':'neg_mean_absolute_error', 'splitter':'TimeSeriesSplit on non-COVID target dates; 12 eligible observations per development block',
             'evaluation':'Development scores reuse tuning folds and are selection scores, not nested CV estimates. Final 24 months excluded from every search.',

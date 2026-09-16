@@ -85,6 +85,22 @@ def test_saved_forecasts_and_source_provenance():
     np.testing.assert_allclose(regional.stock_change_kb-regional.balance_kb,regional.model_reconciliation_kb,atol=1e-7)
 
 
+def test_current_one_month_forecast_uses_lowest_national_final_mae():
+    import json
+    import joblib
+    from us_snd_model import HERE
+    output = HERE/'model_output'
+    metadata = json.loads((output/'model_metadata.json').read_text())
+    metrics = pd.read_csv(output/'us_model_metrics.csv')
+    winner = metrics[metrics.split.eq('holdout')].sort_values(['mae_kb','model']).iloc[0].model
+    assert winner == metadata['one_month_model'] == 'seasonal_change'
+    assert {state['name'] for state in joblib.load(output/'fitted_models.joblib').values()} == {winner}
+    latest = pd.read_csv(output/'latest_forecast.csv')
+    assert latest.loc[latest.padd.eq(0), 'model'].iloc[0] == winner
+    np.testing.assert_allclose(latest.loc[latest.padd.eq(0), 'stock_kb'].iloc[0],
+        latest.loc[latest.padd.ne(0), 'stock_kb'].sum())
+
+
 def test_constituent_flows_and_internal_conversion(panel):
     for c in FLOWS[1:] + ['reported_stock_change_kb']:
         np.testing.assert_allclose(panel[c],panel['finished_'+c]+panel['blending_'+c])

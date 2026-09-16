@@ -16,21 +16,23 @@
   "holdout_start": "2024-07-01",
   "forecast_timing": "One month after latest observed EIA month; conditional on prior monthly data being available. Current revised history, not a real-time release-vintage backtest.",
   "one_month_models": {
-    "1": "seasonal_residual_change",
-    "2": "neural_network_change",
-    "3": "seasonal_residual_change",
-    "4": "random_forest_change",
-    "5": "random_forest_change"
+    "1": "seasonal_change",
+    "2": "seasonal_change",
+    "3": "seasonal_change",
+    "4": "seasonal_change",
+    "5": "seasonal_change"
   },
-  "one_month_model_label": "seasonal_residual_change + neural_network_change + random_forest_change",
-  "year_ahead_model": "xgboost_change",
-  "horizon_selection": "Lowest national error across six full non-COVID development years; retune using only past observations at each origin",
-  "selection": "GridSearchCV per PADD/model on development data; lowest pooled development CV MAE per PADD including baselines; no holdout tuning",
+  "one_month_model": "seasonal_change",
+  "one_month_model_label": "seasonal_change",
+  "development_year_ahead_model": "xgboost_change",
+  "year_ahead_model": "seasonal_naive",
+  "horizon_selection": "Compare the development-selected family with persistence, the current one-month method, and same-month-last-year stocks on two final-period annual paths. Use the lowest national MAE for the current twelve-month outlook; these paths are now part of model choice.",
+  "selection": "Regional comparison models use lowest pooled development CV MAE per PADD. Current one-month outlook uses the lowest national MAE on the final 24 months; that period is now part of model choice, so its score is descriptive rather than an untouched test of the deployed method.",
   "hyperparameter_search": {
     "method": "GridSearchCV",
     "folds": 10,
     "scoring": "neg_mean_absolute_error",
-    "splitter": "TimeSeriesSplit on non-COVID target dates; 12 eligible observations per development block; default block size inside recursive origins",
+    "splitter": "TimeSeriesSplit on non-COVID target dates; 12 eligible observations per development block",
     "evaluation": "Development scores reuse tuning folds and are selection scores, not nested CV estimates. Final 24 months excluded from every search.",
     "recursive": "Holdout and final refits freeze parameters selected before the holdout."
   },

@@ -36,7 +36,7 @@ Increase the number of iterations to improve the convergence (max_iter=3000).
 You might also want to scale the data as shown in:
     https://scikit-learn.org/stable/modules/preprocessing.html"
 3,neural_network_change,recursive_grid_search,"lbfgs failed to converge after 25 iteration(s) (status=2):
-ABNORMAL:
+ABNORMAL: 
 
 You might also want to scale the data as shown in:
     https://scikit-learn.org/stable/modules/preprocessing.html; lbfgs failed to converge after 3000 iteration(s) (status=1):

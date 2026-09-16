@@ -8,7 +8,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Refinery and Blender Net Production of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "eaefda94fbd20988463a4c9853a27a062716b06b431efc519e2544023aeddf1c",
-    "retrieved_utc": "2026-09-06T02:06:53.296531+00:00",
+    "retrieved_utc": "2026-09-16T21:12:32.902221+00:00",
     "rows": 546
   },
   {
@@ -19,8 +19,8 @@
     "source_file": "MGFUPP11m.xls",
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Product Supplied of Finished Motor Gasoline (Thousand Barrels)",
-    "sha256": "74c3eeb96646a2fde7c888b153201f528d23836b5d0a23b2b4f373be30bcdbfa",
-    "retrieved_utc": "2026-09-06T02:06:53.294970+00:00",
+    "sha256": "01dc2ac16bb087f201804ced080be2f96dce9efafb782f4677d72a26abd5d3cf",
+    "retrieved_utc": "2026-09-16T21:12:32.946089+00:00",
     "rows": 546
   },
   {
@@ -32,7 +32,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Imports of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "121f1515aa9e6ca025546b3436aa583b750a63a5637d71fb4a0caf7bf6d59cc7",
-    "retrieved_utc": "2026-09-06T02:06:53.279712+00:00",
+    "retrieved_utc": "2026-09-16T21:12:32.908016+00:00",
     "rows": 546
   },
   {
@@ -44,7 +44,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Exports of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "f3124da1a44b1f6f2342c912bdd520997e67643f1b79a9b059cdcea3ec009300",
-    "retrieved_utc": "2026-09-06T02:06:53.288165+00:00",
+    "retrieved_utc": "2026-09-16T21:12:32.911608+00:00",
     "rows": 546
   },
   {
@@ -56,7 +56,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "c93dba98e65f44d4c70f3c52e32adf0cabf6f55921215d7807601ecf0b4e21ca",
-    "retrieved_utc": "2026-09-06T02:06:53.294840+00:00",
+    "retrieved_utc": "2026-09-16T21:12:32.922180+00:00",
     "rows": 546
   },
   {
@@ -68,7 +68,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Supply Adjustment of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "785e2078c28ba2b1eb2562c805d1ba4f9a2806c4e1a3baa1d751e5d9973c2f22",
-    "retrieved_utc": "2026-09-06T02:06:53.280830+00:00",
+    "retrieved_utc": "2026-09-16T21:12:32.969658+00:00",
     "rows": 463
   },
   {
@@ -80,7 +80,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Biofuels Plant Net Production of Finished Gasoline (Thousand Barrels)",
     "sha256": "63bbdb71831cea9b37e7022cf5ec60fd913874e72187f87c086cb7b1b4b830ca",
-    "retrieved_utc": "2026-09-06T02:06:53.423935+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.095371+00:00",
     "rows": 4
   },
   {
@@ -92,7 +92,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Ending Stocks of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "a9b1f691bfa582746f97abe4de9045a69bb9b9086dee8b6653abce8d3335046d",
-    "retrieved_utc": "2026-09-06T02:06:53.471419+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.123741+00:00",
     "rows": 546
   },
   {
@@ -104,7 +104,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Finished Motor Gasoline Stock Change (Thousand Barrels)",
     "sha256": "edacca2c72b52175ae52233678574966e769f0d670d3966aa02ac489d90984cb",
-    "retrieved_utc": "2026-09-06T02:06:53.479679+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.142699+00:00",
     "rows": 546
   },
   {
@@ -116,7 +116,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Refinery and Blender Net Input of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "4bb802c6e13d5846680d7a77cf064fd1e74d74bc83981e02086eb0f29116cb93",
-    "retrieved_utc": "2026-09-06T02:06:53.494283+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.147303+00:00",
     "rows": 546
   },
   {
@@ -127,8 +127,8 @@
     "source_file": "MBCUPP11m.xls",
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Product Supplied of Gasoline Blending Components (Thousand Barrels)",
-    "sha256": "2acd6a9815c6608f5cfbba1b191c5b9b9ed26080f1384e784bdfb275cc64695a",
-    "retrieved_utc": "2026-09-06T02:06:53.497254+00:00",
+    "sha256": "6b7b9ad33be6f9cdd46f8fbd325159eece311d565af321bff9ea4402e4e5acf0",
+    "retrieved_utc": "2026-09-16T21:12:33.105527+00:00",
     "rows": 405
   },
   {
@@ -140,7 +140,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Imports of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "580f126e2e14f0d70c65b42a7a3ba0d91fe010e82cd0927afae21b4894979488",
-    "retrieved_utc": "2026-09-06T02:06:53.487756+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.113458+00:00",
     "rows": 542
   },
   {
@@ -152,7 +152,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Exports of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "4335b2c862e6dd001db2d404c5b0c88008f609948c0243a80c87b5ec59ddc8d9",
-    "retrieved_utc": "2026-09-06T02:06:53.513006+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.265066+00:00",
     "rows": 423
   },
   {
@@ -164,7 +164,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "94794df6eb5ed2a56e1c3566394ba5ad34c393f990c5d691098317594ee804f3",
-    "retrieved_utc": "2026-09-06T02:06:53.581716+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.291190+00:00",
     "rows": 514
   },
   {
@@ -176,7 +176,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Supply Adjustment of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "b1363734c71655ec047cbd83b33796d909694bc554147a62248a9d231dd86f2f",
-    "retrieved_utc": "2026-09-06T02:06:54.676712+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.236762+00:00",
     "rows": 402
   },
   {
@@ -188,7 +188,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Biofuels Plant Net Production of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "38258c8f15558fe18ecf645ddce599b4d03ecfcb9e5fd155057b61293e21fc4b",
-    "retrieved_utc": "2026-09-06T02:06:54.665296+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.271245+00:00",
     "rows": 118
   },
   {
@@ -200,7 +200,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Ending Stocks of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "de7f7f31923af2415448f89d4deb916f15feda077f3fda9dba9657fc0dc20f07",
-    "retrieved_utc": "2026-09-06T02:06:53.616128+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.323913+00:00",
     "rows": 546
   },
   {
@@ -212,7 +212,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Gasoline Blending Components Stock Change (Thousand Barrels)",
     "sha256": "bde7903133e112db0de63967e3b5fc7bab1b868fcd6f20871deeed470cd6a4f9",
-    "retrieved_utc": "2026-09-06T02:06:53.619776+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.388853+00:00",
     "rows": 546
   },
   {
@@ -224,7 +224,7 @@
     "kind": "observed_series",
     "title": "East Coast (PADD 1) Ending Stocks of Total Gasoline (Thousand Barrels)",
     "sha256": "54a30a3c31b99f7b27f0ddc7a5c6fdc4500b43a2f913e9661ca9139cfa9e341d",
-    "retrieved_utc": "2026-09-06T02:06:53.627752+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.362651+00:00",
     "rows": 546
   },
   {
@@ -236,7 +236,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Refinery and Blender Net Production of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "f77b97e59dd878bbbbd6931245a578a87c6b2b06dcd9c27a533bdc7b52729894",
-    "retrieved_utc": "2026-09-06T02:06:53.678080+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.405912+00:00",
     "rows": 546
   },
   {
@@ -247,8 +247,8 @@
     "source_file": "MGFUPP21m.xls",
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Product Supplied of Finished Motor Gasoline (Thousand Barrels)",
-    "sha256": "14b2eceb84b03b8ea57c4a38d7f37b97c9330ef4aea4a91ee56a0137777e09d0",
-    "retrieved_utc": "2026-09-06T02:06:53.763066+00:00",
+    "sha256": "9a0c43dd696cf7516dc4100c2eed34a55244c859924a13f3a0ea28c8f01c28ab",
+    "retrieved_utc": "2026-09-16T21:12:33.409611+00:00",
     "rows": 546
   },
   {
@@ -260,7 +260,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Imports of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "78591a469134323e2d2152855cc3f16832dff81fc3b0e3d79f2865db4150378f",
-    "retrieved_utc": "2026-09-06T02:06:53.769741+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.442372+00:00",
     "rows": 395
   },
   {
@@ -272,7 +272,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Exports of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "5d91c5d8ec70607ad99f85e9da972e119c0a9b228e349e6541290ae82fa95106",
-    "retrieved_utc": "2026-09-06T02:06:53.763149+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.432048+00:00",
     "rows": 522
   },
   {
@@ -284,7 +284,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "91829247cd0777b1a5825e17567996f5d6056c18bc747a32819b1974777d3253",
-    "retrieved_utc": "2026-09-06T02:06:53.773299+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.538639+00:00",
     "rows": 546
   },
   {
@@ -296,7 +296,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Supply Adjustment of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "46c65f3d1ca14a106423719f4278d69eb825537a59fc8f188acbc2d93da8b12c",
-    "retrieved_utc": "2026-09-06T02:06:53.900627+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.508345+00:00",
     "rows": 433
   },
   {
@@ -308,7 +308,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Biofuels Plant Net Production of Finished Gasoline (Thousand Barrels)",
     "sha256": "7f2c52862e592d8318d99aceaeacd94f1ad74f279373003b91dca15d4cf475eb",
-    "retrieved_utc": "2026-09-06T02:06:53.896595+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.558560+00:00",
     "rows": 210
   },
   {
@@ -320,7 +320,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Ending Stocks of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "4d952ee1c4f23faa2f18eb39f6ca4a677f4de7eef0ab9c4e627c4f3ab1482038",
-    "retrieved_utc": "2026-09-06T02:06:53.917923+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.559983+00:00",
     "rows": 546
   },
   {
@@ -332,7 +332,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Finished Motor Gasoline Stock Change (Thousand Barrels)",
     "sha256": "aab1d704e0317ad278a6017865d42cb445f758d6d2eaaac5d561e1245af5db97",
-    "retrieved_utc": "2026-09-06T02:06:53.917251+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.604490+00:00",
     "rows": 546
   },
   {
@@ -344,7 +344,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Refinery and Blender Net Input of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "88803f71bdbbf9d0ec0150b207c51218181734dfa35aa74350ba0670b80c95b0",
-    "retrieved_utc": "2026-09-06T02:06:53.994638+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.600997+00:00",
     "rows": 546
   },
   {
@@ -355,8 +355,8 @@
     "source_file": "MBCUPP21m.xls",
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Product Supplied of Gasoline Blending Components (Thousand Barrels)",
-    "sha256": "064658e6d228ab2e6eda188eea66155ce5128c2550a6b6cfc7ac2c1dc3473979",
-    "retrieved_utc": "2026-09-06T02:06:54.042396+00:00",
+    "sha256": "553d161992776d5fbf148f23d74cf588d01cc8e29f5b07028c866e997fd851da",
+    "retrieved_utc": "2026-09-16T21:12:33.618590+00:00",
     "rows": 405
   },
   {
@@ -368,7 +368,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Imports of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "dfbfc7c0abd81529513f7ba8cb127adfdddb41ce4daf172f7f7dca37003936d3",
-    "retrieved_utc": "2026-09-06T02:06:54.048398+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.658474+00:00",
     "rows": 418
   },
   {
@@ -380,7 +380,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Exports of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "3a6df1e0a040a96d716a6f59fed3c6d8b0d91bbad28382eb49106ff4ee582dd2",
-    "retrieved_utc": "2026-09-06T02:06:54.050958+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.716049+00:00",
     "rows": 394
   },
   {
@@ -392,7 +392,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "d1d9bf15e109979956ddd47f60a03247acdd7cea61e9aa996faaa5378e576a30",
-    "retrieved_utc": "2026-09-06T02:06:54.102775+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.709038+00:00",
     "rows": 532
   },
   {
@@ -404,7 +404,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Supply Adjustment of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "a4e29aa0c7dff69bb857039087de7d2d4163dcb285423a04be87549385de788c",
-    "retrieved_utc": "2026-09-06T02:06:54.185005+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.792323+00:00",
     "rows": 402
   },
   {
@@ -416,7 +416,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Biofuels Plant Net Production of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "b2c9bd9cd3e9354e73c3e6a843b20dde3a29fb8463b8f8fdeb4985349a6a9889",
-    "retrieved_utc": "2026-09-06T02:06:54.183689+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.758385+00:00",
     "rows": 196
   },
   {
@@ -428,7 +428,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Ending Stocks of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "fa86fcc888c9408247e5d593e82f14146288c32c64cd1d22ba0c1236a8b0cef9",
-    "retrieved_utc": "2026-09-06T02:06:54.189624+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.785161+00:00",
     "rows": 546
   },
   {
@@ -440,7 +440,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Gasoline Blending Components Stock Change (Thousand Barrels)",
     "sha256": "ff1e9e3f13c6c6aaf8d5a8dc1bba3618afa1472d3e0cf4d33b9fb1bbf66d4715",
-    "retrieved_utc": "2026-09-06T02:06:54.199381+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.788445+00:00",
     "rows": 546
   },
   {
@@ -452,7 +452,7 @@
     "kind": "observed_series",
     "title": "Midwest (PADD 2) Ending Stocks of Total Gasoline (Thousand Barrels)",
     "sha256": "8a18e767067d2c3b406cbce44449f25de02fbd9fe374dcf8663de2ce9a92dfdc",
-    "retrieved_utc": "2026-09-06T02:06:54.325278+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.923165+00:00",
     "rows": 546
   },
   {
@@ -464,7 +464,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Refinery and Blender Net Production of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "04092811d8ccacccb457831b0f59f2972d70b27346b1256c80ddd514b8ac3bd4",
-    "retrieved_utc": "2026-09-06T02:06:54.345458+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.857902+00:00",
     "rows": 546
   },
   {
@@ -475,8 +475,8 @@
     "source_file": "MGFUPP31m.xls",
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Product Supplied of Finished Motor Gasoline (Thousand Barrels)",
-    "sha256": "2847e87c03da7493a90ae20bdce436988218db68c40ddadbc13e6106c851537c",
-    "retrieved_utc": "2026-09-06T02:06:54.362725+00:00",
+    "sha256": "924dfcbcee4784f32f83ebcb6137b91ae18db406162bd50e0a7f3d193dd2dbf4",
+    "retrieved_utc": "2026-09-16T21:12:33.915801+00:00",
     "rows": 546
   },
   {
@@ -488,7 +488,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Imports of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "c14676b1101f89251f47e02c00002fc8141fe7515d8a4c9277e13a9fa0a0b992",
-    "retrieved_utc": "2026-09-06T02:06:54.335844+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.919772+00:00",
     "rows": 403
   },
   {
@@ -500,7 +500,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Exports of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "4c5e7ea9980469ec043ff2b4f90fb3c3539ccc37644e5e1f8b6db39604e7ea90",
-    "retrieved_utc": "2026-09-06T02:06:54.461088+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.967786+00:00",
     "rows": 537
   },
   {
@@ -512,7 +512,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "2aeed80126cd03dd1f404eaa3be651d4ff83d43274c647375dcbb7394c7b4f2d",
-    "retrieved_utc": "2026-09-06T02:06:54.454897+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.903033+00:00",
     "rows": 546
   },
   {
@@ -524,7 +524,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Supply Adjustment of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "2b4e2b9523c7ef9c56030b2ad55dd1ef85def09ec8a272cb9eb1b22403b08934",
-    "retrieved_utc": "2026-09-06T02:06:54.459998+00:00",
+    "retrieved_utc": "2026-09-16T21:12:33.997300+00:00",
     "rows": 502
   },
   {
@@ -536,7 +536,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Biofuels Plant Net Production of Finished Gasoline (Thousand Barrels)",
     "sha256": "239aa9cc7f2bcc42c431fb93f00cbcad8b6277a3ce2084e42693b7ff22238da6",
-    "retrieved_utc": "2026-09-06T02:06:54.452655+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.011244+00:00",
     "rows": 54
   },
   {
@@ -548,7 +548,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Ending Stocks of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "32a65dd41a4fe245f23c6bb8807c36d9a4e838496130be8e0776cd0863bcb78b",
-    "retrieved_utc": "2026-09-06T02:06:54.672713+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.195343+00:00",
     "rows": 546
   },
   {
@@ -560,7 +560,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Finished Motor Gasoline Stock Change (Thousand Barrels)",
     "sha256": "0f301f97d7dafba2e8a04e10d47040b8c3c97ddaea7f733bdf593f7921541578",
-    "retrieved_utc": "2026-09-06T02:06:54.680197+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.198396+00:00",
     "rows": 546
   },
   {
@@ -572,7 +572,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Refinery and Blender Net Input of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "b1546b7cc1bd3f240eb601e641b4fbf57fe9fcd6ddb71bce36b84ebf4104ebc1",
-    "retrieved_utc": "2026-09-06T02:06:54.668370+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.207739+00:00",
     "rows": 546
   },
   {
@@ -583,8 +583,8 @@
     "source_file": "MBCUPP31m.xls",
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Product Supplied of Gasoline Blending Components (Thousand Barrels)",
-    "sha256": "748e63dc2ac43bf35956639e6b637d26acfe03648ba0d6ed391c57c123058ed3",
-    "retrieved_utc": "2026-09-06T02:06:54.668060+00:00",
+    "sha256": "b95198060601d469f596fa6eb70757288cd20c418b43d110b7896fdab6522f82",
+    "retrieved_utc": "2026-09-16T21:12:34.221875+00:00",
     "rows": 405
   },
   {
@@ -596,7 +596,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Imports of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "74cbe10794903f54749731a0e006753b8b1c93c96e920ec197c296aadcebe676",
-    "retrieved_utc": "2026-09-06T02:06:54.854798+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.194146+00:00",
     "rows": 524
   },
   {
@@ -608,7 +608,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Exports of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "b01b13730051be38119e2ebd617f174cb2f25b70b38b678c8ae93e817962e339",
-    "retrieved_utc": "2026-09-06T02:06:54.861724+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.554150+00:00",
     "rows": 420
   },
   {
@@ -620,7 +620,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "c0397ab907279773f257a61f102757144b72ab6e8f97b5f815a3c00641864e28",
-    "retrieved_utc": "2026-09-06T02:06:54.891161+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.554262+00:00",
     "rows": 543
   },
   {
@@ -632,7 +632,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Supply Adjustment of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "f8b437e537429d1a15d05c6a200bc2e5008e23ae15686e5130d529780c168008",
-    "retrieved_utc": "2026-09-06T02:06:54.900739+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.547622+00:00",
     "rows": 402
   },
   {
@@ -644,7 +644,7 @@
     "source_file": "blending_biofuels_padd3_source.html",
     "kind": "structural_zero",
     "sha256": "0b58a07269c1710493e710114b52922ebf69edad2a61274fae9382e15a4460f9",
-    "retrieved_utc": "2026-09-06T02:06:54.846051+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.452886+00:00",
     "rows": 549
   },
   {
@@ -656,7 +656,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Ending Stocks of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "951bf52d140237ea44791639777cc4ab6690a25b66ffe384570ca9611961c347",
-    "retrieved_utc": "2026-09-06T02:06:54.882893+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.535452+00:00",
     "rows": 546
   },
   {
@@ -668,7 +668,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Gasoline Blending Components Stock Change (Thousand Barrels)",
     "sha256": "7ba211c2e0fd57c2861cadfcbfb089b07f1383b2a381fc32acf571b06ad40e9a",
-    "retrieved_utc": "2026-09-06T02:06:54.960910+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.612810+00:00",
     "rows": 546
   },
   {
@@ -680,7 +680,7 @@
     "kind": "observed_series",
     "title": "Gulf Coast (PADD 3) Ending Stocks of Total Gasoline (Thousand Barrels)",
     "sha256": "e6aa7ef617f682b898a62c2cac9bc5d6433e98ad3c5d210fa0a46560eb01c19e",
-    "retrieved_utc": "2026-09-06T02:06:54.978269+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.668563+00:00",
     "rows": 546
   },
   {
@@ -692,7 +692,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Refinery and Blender Net Production of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "0828e43f55baec14eb359544fdd140640b008d77653e0057befcf827847b7419",
-    "retrieved_utc": "2026-09-06T02:06:54.985493+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.774350+00:00",
     "rows": 546
   },
   {
@@ -703,8 +703,8 @@
     "source_file": "MGFUPP41m.xls",
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Product Supplied of Finished Motor Gasoline (Thousand Barrels)",
-    "sha256": "e2132b7683b2d4f658af3c3dc503bcd6e435ddfa79c92342a419048ea9e9010f",
-    "retrieved_utc": "2026-09-06T02:06:55.026658+00:00",
+    "sha256": "94f3631295b490fed6523d6773d54ca4fed63339928e5f066d6fdad33e115aa8",
+    "retrieved_utc": "2026-09-16T21:12:34.794446+00:00",
     "rows": 546
   },
   {
@@ -716,7 +716,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Imports of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "b18fee52e1b2c07c50d0cf0e46ed5f7a9509d8258fa825e9a82736f0529e7894",
-    "retrieved_utc": "2026-09-06T02:06:55.017759+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.708512+00:00",
     "rows": 292
   },
   {
@@ -728,7 +728,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Exports of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "5680a875fc13eed1127f0e0973dfff743acf69c4ba954ba91cb3b112faa57f56",
-    "retrieved_utc": "2026-09-06T02:06:55.039813+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.697540+00:00",
     "rows": 378
   },
   {
@@ -740,7 +740,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "86a74c9c7ca898547f97ed9e83d779cb53c3ffff87638aa4d5e9165d3320d0ff",
-    "retrieved_utc": "2026-09-06T02:06:55.061714+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.801905+00:00",
     "rows": 546
   },
   {
@@ -752,7 +752,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Supply Adjustment of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "5455c16d2226b2742691d900a424fa2f79e101af67902444b67400b2051f2cb3",
-    "retrieved_utc": "2026-09-06T02:06:55.091252+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.805363+00:00",
     "rows": 468
   },
   {
@@ -764,7 +764,7 @@
     "kind": "observed_series",
     "title": "Mountain (PADD 4) Renewable Fuel & Oxygenate Plant Net Production of Finished Gasoline (Thousand Barrels)",
     "sha256": "40b046063c9ed1376157e32b3602aa06b366f8746b194e12cf880d9c42894fc0",
-    "retrieved_utc": "2026-09-06T02:06:55.088121+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.831929+00:00",
     "rows": 4
   },
   {
@@ -776,7 +776,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Ending Stocks of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "f0d282676f6a661cf1c22dcdabcec7b8352d6b1e440749e08581004e866ebfe2",
-    "retrieved_utc": "2026-09-06T02:06:55.114379+00:00",
+    "retrieved_utc": "2026-09-16T21:12:34.875403+00:00",
     "rows": 546
   },
   {
@@ -788,7 +788,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Finished Motor Gasoline Stock Change (Thousand Barrels)",
     "sha256": "e3dc162e54b814d7752c199951fca52e1441675cf5a86106c90624e1b9edc178",
-    "retrieved_utc": "2026-09-06T02:06:55.123673+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.018682+00:00",
     "rows": 546
   },
   {
@@ -800,7 +800,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Refinery and Blender Net Input of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "754e6f2652dd59fceda5956a314c1ebf003750ca887934d22c194036e70db42d",
-    "retrieved_utc": "2026-09-06T02:06:55.196397+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.012902+00:00",
     "rows": 546
   },
   {
@@ -811,8 +811,8 @@
     "source_file": "MBCUPP41m.xls",
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Product Supplied of Gasoline Blending Components (Thousand Barrels)",
-    "sha256": "8c687859d23846cc989624d09114719337803df2997815053e8ecce5337d0f6a",
-    "retrieved_utc": "2026-09-06T02:06:55.189461+00:00",
+    "sha256": "3c6345d6537a75929f777ae72f6dff008313a36be6963dc5300a48ac4bc0f84d",
+    "retrieved_utc": "2026-09-16T21:12:35.007427+00:00",
     "rows": 402
   },
   {
@@ -824,7 +824,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Imports of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "ea7b6b7a1844973c7456d47e05d63192420ba11503ffa3abc1d6a58b83c00780",
-    "retrieved_utc": "2026-09-06T02:06:55.205592+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.018297+00:00",
     "rows": 177
   },
   {
@@ -836,7 +836,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Exports of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "159d360efabf0ad03922b4cf5a4ca08938c30fb99def7b8794a2a2f86d7ec4ee",
-    "retrieved_utc": "2026-09-06T02:06:55.196031+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.024458+00:00",
     "rows": 121
   },
   {
@@ -848,7 +848,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "75feaaa174c9fc8801629a020e21c287c32510fba9709fa07dca4d991e4f38c6",
-    "retrieved_utc": "2026-09-06T02:06:55.220643+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.165193+00:00",
     "rows": 257
   },
   {
@@ -860,7 +860,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Supply Adjustment of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "7d2d5568521c4d0adb0eff64a248da3fa6e24e1a621653299a20adc49ad1efc4",
-    "retrieved_utc": "2026-09-06T02:06:55.236221+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.294743+00:00",
     "rows": 402
   },
   {
@@ -872,7 +872,7 @@
     "source_file": "blending_biofuels_padd4_source.html",
     "kind": "structural_zero",
     "sha256": "858fe402ab27ecc2eea85288e4454014a6a0e636d2c9b8fe7bb6637cc0633fdb",
-    "retrieved_utc": "2026-09-06T02:06:55.361153+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.227118+00:00",
     "rows": 549
   },
   {
@@ -884,7 +884,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Ending Stocks of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "37fbfd3fe973c4f72d42f143e719fbebb605b27f3b4ca331791581e3312f398c",
-    "retrieved_utc": "2026-09-06T02:06:55.398386+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.361484+00:00",
     "rows": 546
   },
   {
@@ -896,7 +896,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Gasoline Blending Components Stock Change (Thousand Barrels)",
     "sha256": "86eaf69d2928cab97d16b8f233068ed88a38570172f0498681bc9eae2586a289",
-    "retrieved_utc": "2026-09-06T02:06:55.382380+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.305213+00:00",
     "rows": 546
   },
   {
@@ -908,7 +908,7 @@
     "kind": "observed_series",
     "title": "Rocky Mountain (PADD 4) Ending Stocks of Total Gasoline (Thousand Barrels)",
     "sha256": "04600beb824fe412e3e365b4148a1b29b46e2fd5b4e3f96a00f319bce45dfbe1",
-    "retrieved_utc": "2026-09-06T02:06:55.413792+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.337982+00:00",
     "rows": 546
   },
   {
@@ -920,7 +920,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Refinery and Blender Net Production of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "1485245ac6d1f09ee64ccf9bf43faff0a56ff2439120890a77b3f0451f8e99e9",
-    "retrieved_utc": "2026-09-06T02:06:55.410975+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.356134+00:00",
     "rows": 546
   },
   {
@@ -931,8 +931,8 @@
     "source_file": "MGFUPP51m.xls",
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Product Supplied of Finished Motor Gasoline (Thousand Barrels)",
-    "sha256": "254b74563c28a368e50d48ec78375b76d4e49d13dfb61482d4b3b0fa9b47d908",
-    "retrieved_utc": "2026-09-06T02:06:55.432183+00:00",
+    "sha256": "17fe40bf1fa929c1f11789fb75be6fbcfb936a2d3e08833fbfe545eca59250d1",
+    "retrieved_utc": "2026-09-16T21:12:35.316679+00:00",
     "rows": 546
   },
   {
@@ -944,7 +944,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Imports of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "ccc9556de9d84d7e912f55531e4fb4d5dbd33d20bebcd224d46a1531d4d87a39",
-    "retrieved_utc": "2026-09-06T02:06:55.480609+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.424963+00:00",
     "rows": 543
   },
   {
@@ -956,7 +956,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Exports of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "8343f61ff5742fc9b5708ba759a53fd124aaccdceb4b0febff8714aa2d556cab",
-    "retrieved_utc": "2026-09-06T02:06:55.561216+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.416070+00:00",
     "rows": 545
   },
   {
@@ -968,7 +968,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "647b1c0e1853a81521419c8f93f468438485ce63196907edd6104c7710cdd395",
-    "retrieved_utc": "2026-09-06T02:06:55.530530+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.482955+00:00",
     "rows": 546
   },
   {
@@ -980,7 +980,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Supply Adjustment of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "a41f8de0930e82ab4564c17de1af546c01dd9091b9245c591153199670931243",
-    "retrieved_utc": "2026-09-06T02:06:55.613556+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.519917+00:00",
     "rows": 426
   },
   {
@@ -992,7 +992,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Biofuels Plant Net Production of Finished Gasoline (Thousand Barrels)",
     "sha256": "ca267c04c3d6ba4c2ab5e87bb6dc903a3e21977a4c6ad15ba44114cd0377f779",
-    "retrieved_utc": "2026-09-06T02:06:55.527641+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.478200+00:00",
     "rows": 60
   },
   {
@@ -1004,7 +1004,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Ending Stocks of Finished Motor Gasoline (Thousand Barrels)",
     "sha256": "81d306d3fcd40c404b56de8579168ec1c0aca4eab760db4aaf3a699da013cb79",
-    "retrieved_utc": "2026-09-06T02:06:55.561300+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.529963+00:00",
     "rows": 546
   },
   {
@@ -1016,7 +1016,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Finished Motor Gasoline Stock Change (Thousand Barrels)",
     "sha256": "02dc7517410bd674f60bad4a64d4bdf3d339ad03063407be3bcb2fda68da9c5d",
-    "retrieved_utc": "2026-09-06T02:06:55.572611+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.566934+00:00",
     "rows": 546
   },
   {
@@ -1028,7 +1028,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Refinery and Blender Net Input of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "73ebe1a5149b0c2f92236e9a9edd2af35b57e8fa8073f061cad74a00e14fe94c",
-    "retrieved_utc": "2026-09-06T02:06:55.672729+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.571378+00:00",
     "rows": 546
   },
   {
@@ -1039,8 +1039,8 @@
     "source_file": "MBCUPP51m.xls",
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Product Supplied of Gasoline Blending Components (Thousand Barrels)",
-    "sha256": "a55d9894b8b4e15def35a7790ad999acc2468df73febded2158b4386def17e56",
-    "retrieved_utc": "2026-09-06T02:06:55.662833+00:00",
+    "sha256": "3e2e78af79dd47a37b36a2c7355961a3211571a8bc0f906fe12a1658c291d5a8",
+    "retrieved_utc": "2026-09-16T21:12:35.582834+00:00",
     "rows": 404
   },
   {
@@ -1052,7 +1052,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Imports of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "d123d2098d8db8bc661681ed342ebc66290b64a72ad821285937bad90a220793",
-    "retrieved_utc": "2026-09-06T02:06:55.740600+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.612244+00:00",
     "rows": 496
   },
   {
@@ -1064,7 +1064,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Exports of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "4168b98474f67b0eb3edb24f14c54f4eca72d1e3be410538250bfd5ed9ecfd07",
-    "retrieved_utc": "2026-09-06T02:06:55.725123+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.629467+00:00",
     "rows": 424
   },
   {
@@ -1076,7 +1076,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Net Receipts by Pipeline, Tanker, and Barge from Other PADDs of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "2f6256611cecde0e814275cf82077a74241a0bc23c40bf6a0aa2b0b9c9e07525",
-    "retrieved_utc": "2026-09-06T02:06:55.738981+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.632118+00:00",
     "rows": 481
   },
   {
@@ -1088,7 +1088,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Supply Adjustment of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "3d1333bd706941928fbc60a6defdf3b2ec0d0fa9b6c83d2972f7714cd5217817",
-    "retrieved_utc": "2026-09-06T02:06:55.738873+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.710671+00:00",
     "rows": 402
   },
   {
@@ -1100,7 +1100,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Biofuels Plant Net Production of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "eefb505282aea1111b54675e49b0cf25fd974b526eb60e06c80f9a272927cac9",
-    "retrieved_utc": "2026-09-06T02:06:55.768409+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.746103+00:00",
     "rows": 44
   },
   {
@@ -1112,7 +1112,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Ending Stocks of Gasoline Blending Components (Thousand Barrels)",
     "sha256": "b468da13b75b3e586791b17850f17439807e652908daafdea65cd65c4fd72843",
-    "retrieved_utc": "2026-09-06T02:06:55.891505+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.712972+00:00",
     "rows": 546
   },
   {
@@ -1124,7 +1124,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Gasoline Blending Components Stock Change (Thousand Barrels)",
     "sha256": "7664b29c836a455e89295b5ed89cfcb38bb103b1099a390fe6bc609fbc9c08aa",
-    "retrieved_utc": "2026-09-06T02:06:55.827092+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.729829+00:00",
     "rows": 546
   },
   {
@@ -1136,7 +1136,7 @@
     "kind": "observed_series",
     "title": "West Coast (PADD 5) Ending Stocks of Total Gasoline (Thousand Barrels)",
     "sha256": "bb7abe3ad59c949703fe62b4014b934ec9ff848b7786db77ad231489c8f5a716",
-    "retrieved_utc": "2026-09-06T02:06:55.895485+00:00",
+    "retrieved_utc": "2026-09-16T21:12:35.732289+00:00",
     "rows": 546
   }
 ]
